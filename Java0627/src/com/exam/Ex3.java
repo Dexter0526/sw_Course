@@ -31,6 +31,7 @@ public class Ex3 {
 		
 		System.out.printf("%c => %d\n", ch, (int)ch);
 		
+		final int ALPHA; // 상수(변수 대문자 사용)
 		
 	}
 }
