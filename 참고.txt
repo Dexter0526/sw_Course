@@ -1,0 +1,4 @@
+192.168.0.84 (강사 데탑 로컬)
+
+8009           DESKTOP-3ATCCSQ:0      LISTENING       1684
+8080           DESKTOP-3ATCCSQ:0      LISTENING       1684
