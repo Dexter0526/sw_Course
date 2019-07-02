@@ -47,13 +47,20 @@ public class Ex1 {
 		// "합격" 아니면 "불합격"
 		
 		sum = kor + eng + math;
-		avg = sum/3;
+		avg = sum/3.0;
 		
 		str = (avg >= 60 && kor >= 40 && eng >= 40 && math >= 40) ? "합격" : "불합격";
 		System.out.println("국어 : " + kor + "\t\t영어 : " + eng + "\t\t수학 : " + math);
 		System.out.println("합계 : " + sum + "\t평균 : " + avg);
 		System.out.println("결과 : " + str);
 
+		// 평균 소수점 이하 둘째자리까지 구하는 수식
+		// 평균에 100곱하기 -> (정수형변환) -> 100나누기
+		// 68.333
+		// 6833.333
+		// 6833
+		// 68.33
+		
 	}
 }
 
