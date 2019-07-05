@@ -18,6 +18,33 @@ public class Ex3 {
 				System.out.println(i + "시 " + j + "분");
 			}
 		}
+		// 2중 for문 이용
+		/*
+ 		  for 출력 * 5x5 출력
+ 		  
+		 */
+		/*
+		  *
+		  **
+		  ***
+		  ****
+		  ....
+		 */
+		for(int i = 0; i < 5; i++) {
+			for(int j = 0; j < i+1; j++) {
+				System.out.print("*");
+			}System.out.println();
+		}
 		
+		/*
+		 * 2*1=2 2*2=4 ....
+		 * ....
+		 */
+		
+		for(int i = 2; i < 10; i++) {
+			for(int j = 1; j < 10; j++) {
+				System.out.print(i + " * " + j + " = " + i*j + "\t");
+			}System.out.println();
+		}
 	}
 }
