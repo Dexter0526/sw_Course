@@ -46,6 +46,8 @@ public class Ex4 {
 		for(int i = 0; i < boolArr.length; i++) {
 			System.out.print(boolArr[i] + "\t");
 		}
+		char[] charArr = {'a', 'b', 'c', 'd', 'e'};
+		charArr = new char[5];
 	} 
 	
 }
