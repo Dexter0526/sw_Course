@@ -26,17 +26,26 @@ public class Ex3 {
 		}
 		return answer;
 	}
+	public static int sumArr(int[] arr) {
+		int answer = 0;
+		for(int i = 0; i < arr.length; i++) {
+			answer += arr[i];
+		}
+		return answer;
+	}
 	public static void main(String[] args) {
 		// hello() 호출 -> 출력 "hello java"
-		
 		//sum(10, 20) -> 출력 "10 + 20 = 30"
 		//abs(-5) -> 절대값을 리턴
 		//myMax(10, 20) -> 둘중에 큰값 리턴
 		//mySum(10) -> 1~10까지의 합을 리턴
+		//sumArr(정수배열전달) -> 합계를 리턴
+		int[] arr = {1, 2, 3};
 		hello();
 		sum(10, 20);
 		System.out.println(myMax(10, 20));
 		System.out.println(mySum(10));
+		System.out.println(sumArr(arr));
 		
 	}
 }
