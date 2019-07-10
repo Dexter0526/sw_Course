@@ -26,11 +26,11 @@ public class Ex3 {
 		}
 		return answer;
 	}
-	public static int sumArr(int[] arr) {
-		int answer = 0;
-		for(int i = 0; i < arr.length; i++) {
-			answer += arr[i];
-		}
+	public static int[] sumArr(int[] arr) {
+		int[] answer = new int[2];
+		for(int num : arr) {
+			answer[0] += num;
+		}answer[1] =  answer[0]/arr.length;
 		return answer;
 	}
 	public static void main(String[] args) {
