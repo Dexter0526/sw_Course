@@ -50,6 +50,10 @@ public class Rectangle {
 		System.out.println("(" + x + ", " + y + ")에서 크기가 " + 
 	+ width + "x" + height + "인 사각형");
 	}
+//	void show() {
+//		System.out.println("(" + x + ", " + y + ")에서 크기가 " + 
+//	+ width + "x" + height + "인 사각형");
+//	}
 	
 	boolean contains(Rectangle r) {
 		boolean answer = false;
