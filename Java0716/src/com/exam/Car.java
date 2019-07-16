@@ -12,12 +12,14 @@ public class Car {
 	
 	// 초기값
 	public Car() {
+//		this("white", "auto", 4);
 	}
 	
 	// color gearType 받아 초기화하는 생성자
 	public Car(String color, String gearType) {
-		this.color = color;
-		this.gearType = gearType;
+		this(color, gearType, 4);
+//		this.color = color;
+//		this.gearType = gearType;
 	}
 	// 전부 초기화
 	public Car(String color, String gearType, int doorCount) {
