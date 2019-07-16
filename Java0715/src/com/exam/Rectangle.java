@@ -47,7 +47,7 @@ public class Rectangle {
 		return width * height;
 	}
 	void show() {
-		System.out.println("(" + x + ", " + y + ")에서 크기가" + 
+		System.out.println("(" + x + ", " + y + ")에서 크기가 " + 
 	+ width + "x" + height + "인 사각형");
 	}
 	
