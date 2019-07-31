@@ -1,3 +1,5 @@
 192.168.0.84 (강사 데탑 로컬)
 
 2. font : D2coding (github) -> 한글 깨짐 방지
+
+3. https://cafe.naver.com/zencoding -> 학습하기 -> 14page(자바 pdf)
