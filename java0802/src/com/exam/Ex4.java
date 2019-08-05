@@ -1,6 +1,7 @@
 package com.exam;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 class Puppy {
@@ -69,9 +70,15 @@ public class Ex4 {
 		
 		System.out.println("==================");
 		
-		// Iterator 반복자
+		// Iterator 반복자 : Set, List 타입 객체에서
+		//                Iterator 가져오기 가능.
 		
+		Iterator<Puppy> it = puppyList.iterator();
 		
+		while (it.hasNext()) {
+			Puppy p3 = it.next();
+			p3.speak();
+		}
 		
 		
 	} // main method

@@ -1,6 +1,7 @@
 package com.exam;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +28,17 @@ public class Ex5 {
 			Puppy p = puppyMap.get(key);
 			p.speak();
 		}
+		
+		System.out.println("===============");
+		
+		Iterator<String> it = keySet.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			
+			Puppy p = puppyMap.get(key);
+			p.speak();
+		}
+		
 		
 		System.out.println(puppyMap.size()); // 요소개수 3
 
