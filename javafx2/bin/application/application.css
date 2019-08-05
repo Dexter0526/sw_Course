@@ -1,7 +1,9 @@
-@CHARSET "utf-8";
-
 Label#label1 {
 	-fx-font-family: Serif;
 	-fx-font-size: 50pt;
 	-fx-font-style: italic;
+}
+
+Button{
+	-fx-background-color: yellow;
 }
