@@ -3,8 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+// function 키워드로 정의된 함수선언부를 모두 로딩함
+
+// 전역함수
+	function btnClicked() {
+		var a = 10;
+		a = '문자열';
+		a = true;
+		
+		function func2() {
+			alert('func2() 호출');
+		}
+		func(func2);
+	}
+	
+	// 지역함수
+	function func(a) {
+		// alert(a);
+		a();
+	}
+</script>
 </head>
 <body>
 
+	<button type="button" onclick="">눌러보세요!</button>
+	
 </body>
 </html>
