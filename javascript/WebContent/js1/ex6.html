@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+// 자바스크립트 내장객체 : Array, Date, String, Math 객체
+
+// 배열 - Array { length / join(), sort(), reverse(), concat(), slice() }
+//  -> 자바의 배열이 아닌 List 컬렉션에 가까움.
+
+// 배열 리스트 객체 생성
+var arr = new Array();
+arr[0] = 20;
+arr[1] = 30;
+arr[2] = 10;
+arr[3] = 50;
+arr[4] = 40;
+
+document.write(arr[0] + '<br><br>');
+
+for (var i=0; i<arr.length; i++) {
+	document.write('arr[' + i + '] = ' + arr[i] + '<br>');
+}
+
+
+var arr2 = new Array(1, 2, 3, 4, 5);
+for (var i=0; i<arr2.length; i++) {
+	document.write('arr2[' + i + '] = ' + arr2[i] + '<br>');
+}
+
+var arr3 = [ 6, 7, 8, 9, 10 ];
+for (var i=0; i<arr3.length; i++) {
+	document.write('arr3[' + i + '] = ' + arr3[i] + '<br>');
+}
+
+// for-each문 : Array(=자바List), Object(=자바Map) 
+for (var key in arr3) { // 배열에서는 인덱스가 키값이 됨!
+	document.write(arr3[key] + '<br>');
+}
+
+document.write('배열크기: '+arr.length + '<br>');
+
+// 배열연결  join() -> 문자열 한개 표현으로 리턴
+document.write(arr.join() + '<br>'); // 10,20,30,40,50
+document.write(arr.join('#') + '<br>'); // 10#20#30#40#50
+
+// 정렬
+arr.sort();
+document.write(arr.join() + '<br>');
+
+//배열요소의 순서 반대로
+arr.reverse();
+document.write(arr.join() + '<br>'); // 50,40,30,20,10
+
+// slice() 부분배열 가져오기
+var sli = arr.slice(1, 4); // [ 40, 30, 20 ]
+document.write(sli.join() + '<br>'); // 40,30,20
+
+// 배열 합치기 concat()
+var con = arr2.concat(arr3);
+document.write(con.join() + '<br>'); // 1,2,3,4,5,6,7,8,9,10
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
+
+

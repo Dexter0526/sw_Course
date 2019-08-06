@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	function greeting(name, position) {
+		alert(name + ' ' + position + '님을 환영합니다.');
+	}
+	
+	var a = 10;
+	// alert(a);
+	
+	const b = 20; // 상수
+	
+	// let 변수는 자바 언어처럼 코드블록 기준으로 생명주기 잡힘.
+	for(let i = 1; i <= 3; i++){
+		alert(i);
+	}
+	alert('i = ' + i);
+	
+	// var 변수의 생명주기는 코드블록 기준이 아닌
+	// 함수블록 단위임!
+	for(var i = 1; i <= 3; i++){
+		alert(i);
+	}
+	alert('i = ' + i);
+	
+</script>
+</head>
+<body>
+
+<button type="button" onclick="greeting('홍길동', '부장')">눌러보세요!</button>
+
+</body>
+</html>
