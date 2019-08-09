@@ -26,6 +26,7 @@ public class MyServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		int num1 = 10;
 		int num2 = 20;
 		int add = num1 + num2;
