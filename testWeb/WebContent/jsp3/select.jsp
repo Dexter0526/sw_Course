@@ -1,3 +1,4 @@
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -23,11 +24,13 @@ Class.forName("oracle.jdbc.OracleDriver");
 // 2단계: DB연결
 Connection con = DriverManager.getConnection(url, user, password);
 // 3단계: sql문 준비해서 실행
-String sql = "SELECT * FROM member";
+String sql = "SELECT * FROM member ORDER BY id";
 // 커넥션(연결)객체 con으로부터 sql문 실행하는 문장객체 가져오기
-Statement stmt = con.createStatement();
+//Statement stmt = con.createStatement();
+PreparedStatement pstmt = con.prepareStatement(sql);
 // 4단계: 실행 select문 -> 결과 rs 저장
-ResultSet rs = stmt.executeQuery(sql);
+//ResultSet rs = stmt.executeQuery(sql);
+ResultSet rs = pstmt.executeQuery();
 %>
 
 <h1>회원목록조회</h1>
@@ -61,7 +64,8 @@ ResultSet rs = stmt.executeQuery(sql);
 <%
 // 사용의 역순으로 JDBC 객체 닫기
 rs.close();
-stmt.close();
+//stmt.close();
+pstmt.close();
 con.close();
 %>
 
