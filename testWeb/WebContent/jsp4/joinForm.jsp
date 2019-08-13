@@ -29,13 +29,19 @@ function check(){
 <h1>회원 가입</h1>
 
 <form name="frm" action="joinProcess.jsp" method="post" onsubmit = "return check();">
+	<fieldset>
+	<legend>필수입력사항</legend>
 	아이디: <input type="text" name="id" required/><br>
 	패스워드: <input type="password" name="passwd" required/><br>
 	이름: <input type="text" name="name" required/><br>
+	</fieldset>
+	<fieldset>
+	<legend>선택입력사항</legend>
 	나이: <input type="text" name="age" /><br>
 	성별: <input type="radio" name="gender" value="남" />남자
 	      <input type="radio" name="gender" value="여" />여자<br>
 	이메일: <input type="email" name="email" /><br>
+	</fieldset>
 	<button type="submit" >회원가입</button>
 </form>
 
