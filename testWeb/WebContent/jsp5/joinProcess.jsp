@@ -7,16 +7,20 @@
 <% request.setCharacterEncoding("utf-8"); %>
 
 <%-- 액션태그로 자바빈 객체 생성 --%>
-
+<jsp:useBean id="memberVo" class="com.exam.vo.MemberVo"/>
 
 <%-- 액션태그로 파라미터값 찾아서 자바빈 객체에 저장 --%>
+<jsp:setProperty property="*" name="memberVo"/>
 
+<%-- 가입날짜 생성해서 채우기 --%>
+<%memberVo.setRegDate(new Timestamp(System.currentTimeMillis())); %>
 
 <%-- 액션태그로 자바빈 값 각각 출력 --%>
-아이디:
-패스워드:
-이름:
-나이:
-성별:
-이메일:
+아이디: <jsp:getProperty property="name" name="memberVo"/>
+패스워드: <jsp:getProperty property="passwd" name="memberVo"/>
+이름: <jsp:getProperty property="name" name="memberVo"/>
+나이: <jsp:getProperty property="age" name="memberVo"/>
+성별: <jsp:getProperty property="gender" name="memberVo"/>
+이메일: <jsp:getProperty property="email" name="memberVo"/>
+입력날짜 : <jsp:getProperty property="regDate" name="memberVo"/>
 

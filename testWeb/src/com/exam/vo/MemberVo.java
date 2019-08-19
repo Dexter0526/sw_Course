@@ -1,6 +1,6 @@
 package com.exam.vo;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class MemberVo {
 	private String id;
