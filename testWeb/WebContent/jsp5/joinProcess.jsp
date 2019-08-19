@@ -1,3 +1,4 @@
+<%@page import="com.exam.vo.MemberVo"%>
 <%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -5,23 +6,17 @@
 <%-- post 파라미터값 한글처리 --%>
 <% request.setCharacterEncoding("utf-8"); %>
 
-<%
-// 파라미터값을 저장할 VO 객체 준비
-// MemberVO memberVO = new MemberVO();
-%>
-<jsp:useBean id="memberVo" class="com.exam.vo.MemberVo" />
+<%-- 액션태그로 자바빈 객체 생성 --%>
 
 
-<%
-// 파라미터값 가져오기
-// String id = request.getParameter("id");
-// memberVO.setId(id);
-
-// memberVO.setPasswd(request.getParameter("passwd"));
-%>
-
-<jsp:setProperty property="*" name="memberVo"/>
+<%-- 액션태그로 파라미터값 찾아서 자바빈 객체에 저장 --%>
 
 
-
+<%-- 액션태그로 자바빈 값 각각 출력 --%>
+아이디:
+패스워드:
+이름:
+나이:
+성별:
+이메일:
 
