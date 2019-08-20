@@ -1,13 +1,15 @@
-<%@page import="com.exam.vo.MemberVo"%>
+<%@page import="com.exam.vo.MemberVO"%>
 <%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%-- post 파라미터값 한글처리 --%>
-<% request.setCharacterEncoding("utf-8"); %>
+<%
+	request.setCharacterEncoding("utf-8");
+%>
 
 <%-- 액션태그로 자바빈 객체 생성 --%>
-<jsp:useBean id="memberVo" class="com.exam.vo.MemberVo"/>
+<jsp:useBean id="memberVo" class="com.exam.vo.MemberVO"/>
 
 <%-- 액션태그로 파라미터값 찾아서 자바빈 객체에 저장 --%>
 <jsp:setProperty property="*" name="memberVo"/>

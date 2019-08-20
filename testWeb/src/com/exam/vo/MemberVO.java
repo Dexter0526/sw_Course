@@ -2,7 +2,8 @@ package com.exam.vo;
 
 import java.sql.Timestamp;
 
-public class MemberVo {
+// Value Object(VO) = 자바빈(Java Bean) 클래스 = DTO(Data Transfer Object)
+public class MemberVO {
 	private String id;
 	private String passwd;
 	private String name;
@@ -10,6 +11,7 @@ public class MemberVo {
 	private String gender;
 	private String email;
 	private Timestamp regDate;
+	
 	public String getId() {
 		return id;
 	}
@@ -52,20 +54,10 @@ public class MemberVo {
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
 	}
-	public MemberVo(String id, String passwd, String name, Integer age, String gender, String email,
-			Timestamp regDate) {
-		super();
-		this.id = id;
-		this.passwd = passwd;
-		this.name = name;
-		this.age = age;
-		this.gender = gender;
-		this.email = email;
-		this.regDate = regDate;
-	}
+	
 	@Override
 	public String toString() {
-		return "MemberVo [id=" + id + ", passwd=" + passwd + ", name=" + name + ", age=" + age + ", gender=" + gender
+		return "MemberVO [id=" + id + ", passwd=" + passwd + ", name=" + name + ", age=" + age + ", gender=" + gender
 				+ ", email=" + email + ", regDate=" + regDate + "]";
 	}
 }
