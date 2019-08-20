@@ -1,3 +1,4 @@
+<%@page import="com.exam.vo.MemberVO"%>
 <%@page import="com.exam.dao.MemberDao"%>
 <%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -17,26 +18,20 @@
 	// check == 1  로그인인증. main.jsp로 이동
 	// check == 0  패스워드틀림. 뒤로이동
 	// check == -1 아이디없음. 뒤로이동
-	int check = memberDao.userCheck(id, passwd);
+	//int check = memberDao.userCheck(id, passwd);
 
-	if (check == 1) {
+	MemberVO memberVO = memberDao.userCheck(id, passwd);
+	
+	if (memberVO != null) {
 		// 로그인 인증
-		session.setAttribute("id", id);
+		session.setAttribute("memberVO", memberVO);
 		
 		// main.jsp 로 이동
 		response.sendRedirect("main.jsp");
-	} else if (check == 0) {
+	} else {
 		%>
 		<script>
-			alert('패스워드가 다릅니다.');
-			history.back();
-		</script>
-		<%
-	} else { // check == -1
-		%>
-		<script>
-			alert('없는 아이디 입니다.');
-			//location.href = 'loginForm.jsp';
+			alert('아이디 또는 패스워드가 다릅니다.');
 			history.back();
 		</script>
 		<%
