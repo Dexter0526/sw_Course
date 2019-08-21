@@ -20,11 +20,13 @@
 	// check == -1 아이디없음. 뒤로이동
 	//int check = memberDao.userCheck(id, passwd);
 
-	MemberVO memberVO = memberDao.userCheck(id, passwd);
+	// id와 passwd가 모두 일치하면 MemberVO 객체를 리턴. 로그인 성공 의미.
+	// id 또는 passwd가 불일치하면 null을 리턴. 로그인 실패 의미.
+	MemberVO memberVO = memberDao.loginCheckAndGetMember(id, passwd);
 	
 	if (memberVO != null) {
 		// 로그인 인증
-		session.setAttribute("memberVO", memberVO);
+		session.setAttribute("loginMember", memberVO);
 		
 		// main.jsp 로 이동
 		response.sendRedirect("main.jsp");

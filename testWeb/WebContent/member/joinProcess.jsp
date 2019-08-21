@@ -21,12 +21,23 @@ memberVO.setRegDate(new Timestamp(System.currentTimeMillis()));
 MemberDao memberDao = MemberDao.getInstance();
 // 회원가입 메소드 호출
 int rowCount = memberDao.insertMember(memberVO);
+if (rowCount > 0) {
+	%>
+	<script>
+		alert('회원가입 되었습니다.');
+		location.href = 'loginForm.jsp'; // 이동
+	</script>
+	<%
+} else {
+	%>
+	<script>
+		alert('회원가입이 실패했습니다.');
+		history.back(); // 뒤로가기 (회원가입 폼 화면)
+	</script>
+	<%
+}
 %>
 
-<script>
-alert('회원가입 성공 : <%=rowCount %>');
-location.href = 'loginForm.jsp'; // 이동
-</script>
 
 
 
