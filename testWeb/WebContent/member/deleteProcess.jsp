@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%
 // 세션값 가져오기
-String id = (String) session.getAttribute("id");
+String id = (String) session.getAttribute("loginMember");
 // 세션값 없으면 loginForm.jsp 이동
 if (id == null) {
 	response.sendRedirect("loginForm.jsp");

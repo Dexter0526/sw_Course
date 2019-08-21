@@ -31,12 +31,12 @@ MemberDao memberDao = MemberDao.getInstance();
 
 // DB회원정보 수정하기 메소드 호출
 int result = memberDao.updateMember(memberVO);
-// 수정된 레코드를 가져오기
-MemberVO updatedMemberVO = memberDao.getMember(memberVO.getId());
 
 // result == 1 수정성공. main.jsp이동
 // result == 0 패스워드틀림. 뒤로이동
 if (result == 1) {
+	// 수정된 레코드를 가져오기
+	MemberVO updatedMemberVO = memberDao.getMember(memberVO.getId());
 	// 세션값 회원정보 수정
 	session.setAttribute("loginMember", updatedMemberVO);
 	%>

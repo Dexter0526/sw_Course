@@ -87,10 +87,9 @@ public class MemberDao {
 	} // getMember method
 	
 	
-	public MemberVO loginCheckAndGetMember(String id, String passwd) {
-		//int check = -1; // -1 아이디 불일치. 0 패스워드 불일치. 1 일치함
-		MemberVO memberVO = null;
-		
+	public int userCheck(String id, String passwd) {
+		int check = -1; // -1 아이디 불일치. 0 패스워드 불일치. 1 일치함
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -99,7 +98,7 @@ public class MemberDao {
 			con = DBManager.getConnection();
 			
 			//3단계: sql문 준비
-			String sql = "SELECT * FROM member WHERE id = ?";
+			String sql = "SELECT passwd FROM member WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			//4단계: sql문 실행
@@ -109,36 +108,19 @@ public class MemberDao {
 			if (rs.next()) { 
 				// 아이디 있음
 				if (passwd.equals(rs.getString("passwd"))) {
-					// check = 1; 
-					memberVO = new MemberVO();
-					
-					memberVO.setId(rs.getString("id"));
-					memberVO.setPasswd(rs.getString("passwd"));
-					memberVO.setName(rs.getString("name"));
-					
-					// rs.getInt("age");  숫자값이 null이 아니고 항상 존재할때.
-					String strAge = rs.getString("age");
-					if (strAge != null) { // "33"
-						memberVO.setAge(Integer.parseInt(strAge));
-					}
-					
-					memberVO.setGender(rs.getString("gender"));
-					memberVO.setEmail(rs.getString("email"));
-					memberVO.setRegDate(rs.getTimestamp("reg_date"));
+					check = 1;  // 아이디,패스워드 일치
 				} else {
-					// check = 0;
-					memberVO = null;
+					check = 0; // 패스워드 불일치
 				}
 			} else { // 아이디 없음
-				// check = -1;
-				memberVO = null;
+				check = -1;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(con, pstmt, rs);
 		}
-		return memberVO;
+		return check;
 	} // userCheck method
 	
 	
