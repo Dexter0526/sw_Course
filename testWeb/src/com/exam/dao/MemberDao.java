@@ -175,13 +175,10 @@ public class MemberDao {
 	// 매개변수 memberVO에 passwd필드는 수정의 대상이 아니라
 	// 본인 확인 용도로 사용
 	public int updateMember(MemberVO memberVO) {
-		System.out.println(memberVO);
-		
-		int result = 0; // 1 수정성공, 0 수정실패
+		int rowCount = 0;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		String sql = "";
 		
@@ -190,41 +187,47 @@ public class MemberDao {
 			//2단계: DB연결
 			con = DBManager.getConnection();
 			//3단계: sql문 준비
-			sql = "SELECT passwd FROM member WHERE id = ?";
+			sql = "UPDATE member SET name=?, age=?, gender=?, email=? WHERE id=?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, memberVO.getId());
-			//4단계: sql문 실행 -> rs 생성
-			rs = pstmt.executeQuery();
-			//5단계: rs 사용
-			if (rs.next()) {
-				if (memberVO.getPasswd().equals(rs.getString("passwd"))) {
-					pstmt.close(); // 앞에 SELECT문 수행한 pstmt 닫기
-					
-					sql = "UPDATE member SET name=?, age=?, gender=?, email=? WHERE id=?";
-					pstmt = con.prepareStatement(sql);
-					pstmt.setString(1, memberVO.getName());
-					
-					pstmt.setObject(2, memberVO.getAge()); // age필드값이 null일수 있으면
-					//pstmt.setInt(2, memberVO.getAge()); // age필드값이 항상 있으면
-					
-					pstmt.setString(3, memberVO.getGender());
-					pstmt.setString(4, memberVO.getEmail());
-					pstmt.setString(5, memberVO.getId());
-					// 실행
-					pstmt.executeUpdate();
-					
-					result = 1;
-				} else {
-					result = 0; // 패스워드 불일치로 수정실패를 의미함
-				}
-			}
+			pstmt.setString(1, memberVO.getName());
+			
+			pstmt.setObject(2, memberVO.getAge()); // age필드값이 null일수 있으면
+			//pstmt.setInt(2, memberVO.getAge()); // age필드값이 항상 있으면
+			
+			pstmt.setString(3, memberVO.getGender());
+			pstmt.setString(4, memberVO.getEmail());
+			pstmt.setString(5, memberVO.getId());
+			// 실행
+			rowCount = pstmt.executeUpdate();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(con, pstmt, rs);
+			DBManager.close(con, pstmt);
 		}
-		return result;
+		return rowCount;
 	} // updateMember method
+	
+	
+	public int deleteMember(String id) {
+		int rowCount = 0; // 삭제된 행의 개수
+		// JDBC 참조변수 준비
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		try {
+			con = DBManager.getConnection();
+			sql = "DELETE FROM member WHERE id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt);
+		}
+		return rowCount;
+	}
 	
 
 } // class MemberDao

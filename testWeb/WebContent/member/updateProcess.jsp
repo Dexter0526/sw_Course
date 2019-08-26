@@ -28,16 +28,15 @@ request.setCharacterEncoding("utf-8");
 <%
 // DB객체 준비
 MemberDao memberDao = MemberDao.getInstance();
-
-// DB회원정보 수정하기 메소드 호출
-int result = memberDao.updateMember(memberVO);
-
-// result == 1 수정성공. main.jsp이동
-// result == 0 패스워드틀림. 뒤로이동
-if (result == 1) {
-	// 수정된 레코드를 가져오기
+// 사용자 패스워드 확인해서 본인확인함. 1이 리턴되면 성공.
+int check = memberDao.userCheck(memberVO.getId(), memberVO.getPasswd());
+//패스워드일치 1. 패스워드불일치 0 
+if (check == 1) { 
+	memberDao.updateMember(memberVO); // DB회원정보 수정하기
+	
+	// DB에서 수정된 회원정보 레코드를 가져오기
 	MemberVO updatedMemberVO = memberDao.getMember(memberVO.getId());
-	// 세션값 회원정보 수정
+	// 세션값 회원정보를 수정
 	session.setAttribute("loginMember", updatedMemberVO);
 	%>
 	<script>
@@ -45,7 +44,7 @@ if (result == 1) {
 		location.href = 'main.jsp';
 	</script>
 	<%
-} else { // result == 0
+} else {
 	%>
 	<script>
 		alert('패스워드가 다릅니다.');

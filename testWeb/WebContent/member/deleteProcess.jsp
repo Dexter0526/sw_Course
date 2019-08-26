@@ -1,11 +1,13 @@
+<%@page import="com.exam.vo.MemberVO"%>
+<%@page import="com.exam.dao.MemberDao"%>
 <%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 // 세션값 가져오기
-String id = (String) session.getAttribute("loginMember");
+MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
 // 세션값 없으면 loginForm.jsp 이동
-if (id == null) {
+if (loginMember == null) {
 	response.sendRedirect("loginForm.jsp");
 	return;
 }
@@ -14,58 +16,30 @@ if (id == null) {
 <%
 // passwd 파라미터값 가져오기
 String passwd = request.getParameter("passwd");
-%>
 
-<%
-//DB접속정보
-String url = "jdbc:oracle:thin:@localhost:1521:xe";
-String user = "scott";
-String password = "tiger";
+// DAO 준비
+MemberDao memberDao = MemberDao.getInstance();
 
-//1단계: DB 드라이버 로딩
-Class.forName("oracle.jdbc.OracleDriver");
-//2단계: DB연결
-Connection con = DriverManager.getConnection(url, user, password);
-//3단계: sql문 준비. id에 해당하는 passwd 가져오기
-String sql = "SELECT passwd FROM member WHERE id = ?";
-PreparedStatement pstmt = con.prepareStatement(sql);
-pstmt.setString(1, id);
-//4단계: sql문 실행
-ResultSet rs = pstmt.executeQuery();
-//5단계: rs사용
-//rs 데이터 있으면
-//    패스워드비교  맞으면  delete수행 후 loginForm.jsp이동
-//                  틀리면  '패스워드틀림' 뒤로이동
-if (rs.next()) {
-	if (passwd.equals(rs.getString("passwd"))) {
-		pstmt.close(); // select문 가진 pstmt 닫기
-		
-		sql = "DELETE FROM member WHERE id=?";
-		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, id);
-		// 실행
-		pstmt.executeUpdate();
-		// 세션값 초기화
-		session.invalidate();
-		
-		//response.sendRedirect("loginForm.jsp");
-		%>
-		<script>
+int check = memberDao.userCheck(loginMember.getId(), passwd);
+// check값 1이면 패스워드 일치. 0이면 패스워드 불일치.
+if (check == 1) {
+	// DB회원정보 삭제
+	memberDao.deleteMember(loginMember.getId());
+	// 세션값 초기화(모두 비우기)
+	session.invalidate();
+	%>
+	<script>
 		alert('회원삭제가 성공했습니다.');
 		location.href = 'loginForm.jsp';
-		</script>
-		<%
-	} else {
-		%>
-		<script>
+	</script>
+	<%
+} else {
+	%>
+	<script>
 		alert('패스워드가 다릅니다.');
 		history.back();
-		</script>
-		<%
-	}
+	</script>
+	<%
 }
 %>
-
-
-
 
