@@ -45,28 +45,29 @@
 <article>
     
 <h1>Join Us</h1>
-<form id="join">    
+<form id="join" action="joinProcess.jsp" method="post" onsubmit="return check();">    
 <fieldset>
 <legend>Basic Info</legend>
-<label>User ID</label> <input name="" type="text" class="id"> <input name="" type="button" value="dup. check" class="dup"><br>
-<label>Password</label> <input name="" type="password" class="pass"><br>
-<label>Retype Password</label> <input name="" type="password" class="pass"><br>
-<label>Name</label> <input name="" type="text" class="nick"><br>
-<label>E-Mail</label> <input name="" type="email" class="email" ><br>
-<label>Retype E-mail</label> <input name="" type="email" class="email"><br>
+<label>User ID</label> <input name="id" type="text" class="id"> <input name="" type="button" value="dup. check" class="dup"><br>
+<label>Password</label> <input name="passwd" type="password" class="pass"><br>
+<label>Retype Password</label> <input name="passwd2" type="password" class="pass"><br>
+<label>Name</label> <input name="name" type="text" class="nick"><br>
+<label>E-Mail</label> <input name="email" type="email" class="email" ><br>
+<label>Retype E-mail</label> <input name="email2" type="email" class="email"><br>
 </fieldset>
 
 
 <fieldset>
 <legend>Optional</legend>
-<label>Address</label> <input name="" type="text" class="address"><br>
-<label>Phone Number</label> <input name="" type="tel" class="phone"><br>
-<label>Mobile Phone Number</label> <input name="" type="tel" class="mobile"><br>
+<label>Address</label> <input name="address" type="text" class="address"><br>
+<label>Phone Number</label> <input name="tel" type="tel" class="phone"><br>
+<label>Mobile Phone Number</label> <input name="mtel" type="tel" class="mobile"><br>
 </fieldset>
 
 <div class="clear"></div>
 <div id="buttons">
-<input name="" type="button" value="Submit" class="submit"> <input name="" type="button" value="Cancel" class="cancel">
+<input type="submit" value="회원가입" class="submit">
+<input type="reset" value="취소" class="cancel">
 </div>
 
 </form> 
