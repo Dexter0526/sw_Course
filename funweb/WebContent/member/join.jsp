@@ -28,6 +28,62 @@
  </script>
  <![endif]--> 
 
+<script>
+// 사용자 입력값 검증
+function check() {
+	if (frm.id.value.length < 3) {
+		alert('아이디는 세글자 이상 사용가능합니다.');
+		frm.id.select();
+		return false;
+	}
+	if (frm.passwd.value.length == 0) {
+		alert('패스워드는 필수 입력 항목입니다.');
+		frm.passwd.focus();
+		return false;
+	}
+	if (frm.name.value.length == 0) {
+		alert('이름은 필수 입력 항목입니다.');
+		frm.name.focus();
+		return false;
+	}
+	if (frm.email.value.length == 0) {
+		alert('이메일은 필수 입력 항목입니다.');
+		frm.email.focus();
+		return false;
+	}
+	
+	if (document.frm.passwd.value != document.frm.passwd2.value) {
+		alert('패스워드 입력값이 서로 다릅니다.');
+		document.frm.passwd.select();
+		return false;
+	}
+	if (frm.email.value != frm.email2.value) {
+		alert('이메일 입력값이 서로 다릅니다.');
+		document.frm.email.select();
+		return false;
+	}
+	return true;
+}
+
+// 새로운 브라우저를 띄우고 아이디 중복확인해주는 기능
+function winOpen() {
+	//var inputId = document.getElementById('id').value
+	var inputId = document.frm.id.value;
+	// id입력값이 공백이면 '아이디입력하세요' 포커스주기
+	if (inputId == '') { // inputId.length == 0
+		alert('아이디를 입력하세요.');
+		document.frm.id.focus();
+		return;
+	}
+	// 새로운 자식창(브라우저) 열기
+	// open()호출한쪽은 부모창
+	// open()에 의해 새로열린 창은 자식창
+	// 부모-자식 관계가 있음.
+	// 자식창의 데이터를 부모창으로 가져올수 있음.
+	var childWindow = window.open('joinIdDupCheck.jsp?userid=' + inputId, '', 'width=400,height=300');
+}
+
+</script>
 </head>
 
 <body>
@@ -45,29 +101,28 @@
 <article>
     
 <h1>Join Us</h1>
-<form id="join" action="joinProcess.jsp" method="post" onsubmit="return check();">    
+<form name="frm" id="join" action="joinProcess.jsp" method="post" onsubmit="return check();">    
 <fieldset>
-<legend>Basic Info</legend>
-<label>User ID</label> <input name="id" type="text" class="id"> <input name="" type="button" value="dup. check" class="dup"><br>
-<label>Password</label> <input name="passwd" type="password" class="pass"><br>
-<label>Retype Password</label> <input name="passwd2" type="password" class="pass"><br>
-<label>Name</label> <input name="name" type="text" class="nick"><br>
-<label>E-Mail</label> <input name="email" type="email" class="email" ><br>
-<label>Retype E-mail</label> <input name="email2" type="email" class="email"><br>
+	<legend>Basic Info</legend>
+	<label>User ID</label> <input name="id" type="text" class="id" id="id"> <input type="button" value="ID 중복확인" class="dup" onclick="winOpen();"><br>
+	<label>Password</label> <input name="passwd" type="password" class="pass"><br>
+	<label>Retype Password</label> <input name="passwd2" type="password" class="pass"><br>
+	<label>Name</label> <input name="name" type="text" class="nick"><br>
+	<label>E-Mail</label> <input name="email" type="email" class="email" ><br>
+	<label>Retype E-mail</label> <input name="email2" type="email" class="email"><br>
 </fieldset>
 
-
 <fieldset>
-<legend>Optional</legend>
-<label>Address</label> <input name="address" type="text" class="address"><br>
-<label>Phone Number</label> <input name="tel" type="tel" class="phone"><br>
-<label>Mobile Phone Number</label> <input name="mtel" type="tel" class="mobile"><br>
+	<legend>Optional</legend>
+	<label>Address</label> <input name="address" type="text" class="address"><br>
+	<label>Phone Number</label> <input name="tel" type="tel" class="phone"><br>
+	<label>Mobile Phone Number</label> <input name="mtel" type="tel" class="mobile"><br>
 </fieldset>
 
 <div class="clear"></div>
 <div id="buttons">
 <input type="submit" value="회원가입" class="submit">
-<input type="reset" value="취소" class="cancel">
+<input name="" type="button" value="Cancel" class="cancel">
 </div>
 
 </form> 
