@@ -1,7 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    String id = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies != null){
+    	for(Cookie cookie:cookies){
+    		if(cookie.getName().equals("id")){
+    			id = cookie.getValue();
+    			session.setAttribute("id", id);
+    		}
+    	}
+    }
+    
+    id = (String)session.getAttribute("id");
+    %>
   <header>
-       <div id="login"> <a href="../member/login.jsp">login</a> | <a href="../member/join.jsp">Join</a></div>
+       <div id="login">
+       <%
+       if(id == null){
+    	   %>
+    	   <a href="../member/login.jsp">login</a>
+    	   <%
+       }else{
+    	   %>
+    	   <%=id %>님
+    	   <a href="../member/logout.jsp">로그아웃</a>
+    	   <%
+       }
+       %>
+       	<a href="../member/login.jsp">login</a>
+       | <a href="../member/join.jsp">Join</a></div>
         <div class="clear"></div>
         <div id="logo"><a href="../"><img src="../images/logo.gif" width="265" height="62" alt="Fun Web"></a></div>
         <nav id="top_menu">

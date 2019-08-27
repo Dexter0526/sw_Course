@@ -16,6 +16,32 @@ public class MemberDao {
 	
 	private MemberDao() {
 	}
+	
+	public boolean isIdDuplicaed(String id) {
+		boolean isIdDuplicaed = false;
+		int count = 0;
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DBManager.getConnection();
+			String sql = "select count(*) as cnt from member where id = ?";
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, id);
+			rs = stmt.executeQuery();
+			rs.next();
+			if(rs.getInt(1) != 0) {
+				isIdDuplicaed = true;	// 사용중 아이디
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(con, stmt, rs);
+		}
+		
+		return isIdDuplicaed;
+	}
 
 	public int insertMember(MemberVO vo) {
 		Connection con = null;
@@ -25,16 +51,17 @@ public class MemberDao {
 		try {
 			con = DBManager.getConnection();
 			// 3단계: sql문 준비
-			String sql = "INSERT INTO member (id,passwd,name,age,gender,email,reg_date) ";
-			sql += " VALUES (?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO member (id,passwd,name,email,address,tel,mtel,reg_date) ";
+			sql += " VALUES (?,?,?,?,?,?,?,?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPasswd());
 			pstmt.setString(3, vo.getName());
-			pstmt.setInt(4, vo.getAge());
-			pstmt.setString(5, vo.getGender());
-			pstmt.setString(6, vo.getEmail());
-			pstmt.setTimestamp(7, vo.getRegDate());
+			pstmt.setString(4, vo.getEmail());
+			pstmt.setString(5, vo.getAddress());
+			pstmt.setString(6, vo.getTel());
+			pstmt.setString(7, vo.getMtel());
+			pstmt.setTimestamp(8, vo.getRegDate());
 			// 4단계: sql문 실행
 			rowCount = pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -71,10 +98,9 @@ public class MemberDao {
 				// rs.getInt("age");  숫자값이 null이 아니고 항상 존재할때.
 				String strAge = rs.getString("age");
 				if (strAge != null) { // "33"
-					memberVO.setAge(Integer.parseInt(strAge));
+
 				}
 				
-				memberVO.setGender(rs.getString("gender"));
 				memberVO.setEmail(rs.getString("email"));
 				memberVO.setRegDate(rs.getTimestamp("reg_date"));
 			}
@@ -153,10 +179,9 @@ public class MemberDao {
 				// rs.getInt("age");  숫자값이 null이 아니고 항상 존재할때.
 				String strAge = rs.getString("age");
 				if (strAge != null) { // "33"
-					memberVO.setAge(Integer.parseInt(strAge));
+
 				}
 				
-				memberVO.setGender(rs.getString("gender"));
 				memberVO.setEmail(rs.getString("email"));
 				memberVO.setRegDate(rs.getTimestamp("reg_date"));
 				
@@ -191,10 +216,8 @@ public class MemberDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, memberVO.getName());
 			
-			pstmt.setObject(2, memberVO.getAge()); // age필드값이 null일수 있으면
 			//pstmt.setInt(2, memberVO.getAge()); // age필드값이 항상 있으면
 			
-			pstmt.setString(3, memberVO.getGender());
 			pstmt.setString(4, memberVO.getEmail());
 			pstmt.setString(5, memberVO.getId());
 			// 실행
