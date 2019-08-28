@@ -37,20 +37,12 @@
 	<!-- 헤더 영역 -->
 	<jsp:include page="../include/header.jsp" />
 
-  <div class="clear"></div>
-  <div id="sub_img_center"></div>
-  <div class="clear"></div>
-  <nav id="sub_menu">
-    
-        <ul>
-            <li> <a href="#">Notice</a></li>
-            <li> <a href="#">Public News</a></li>
-            <li> <a href="#">Driver Download</a></li>
-            <li> <a href="#">Service Policy</a></li>
-    	</ul>   
-    
-    
-    </nav>
+	<div class="clear"></div>
+	<div id="sub_img_center"></div>
+	
+	<div class="clear"></div>
+	<%-- nav 영역 --%>
+	<jsp:include page="../include/nav_center.jsp" />
 <article>
     
 <h1>Notice</h1>
@@ -171,16 +163,24 @@
 </table>
 
 <div id="table_search">
-<input name="" type="text" class="input_box"> <input type="button" value="Search" class="btn">
+	<input type="button" value="글쓰기" class="btn" onclick="location.href='write.jsp';">
 </div>
- <div class="clear"></div>
+
+<div id="table_search">
+	<input name="" type="text" class="input_box"> <input type="button" value="Search" class="btn">
+</div>
+
+<div class="clear"></div>
  
 <div id="page_control">
-<a href="#">Prev</a> <a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="3">6</a> <a href="#">7</a> <a href="#">8</a> <a href="#">9</a> <a href="#">10</a>  <a href="#">Next</a></div>
+	<a href="#">Prev</a> <a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="3">6</a> <a href="#">7</a> <a href="#">8</a> <a href="#">9</a> <a href="#">10</a>  <a href="#">Next</a>
+</div>
     
 </article>
     
-     <div class="clear"></div>
+    
+    
+	<div class="clear"></div>
     
     <!-- 푸터 영역 -->
 	<jsp:include page="../include/footer.jsp" />
