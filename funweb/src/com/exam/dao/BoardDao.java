@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.exam.vo.BoardVO;
 
@@ -80,8 +82,55 @@ public class BoardDao {
 		}
 	} // insertBoard method
 	
-	
-	
-	
+	// 시작행번호부터 갯수만큼 가져오기(페이징)
+	public List<BoardVO> getBoards(int startRow, int pageSize){
+		List<BoardVO> list = new ArrayList<BoardVO>();
+		int endRow = startRow + pageSize -1;	// 오라클 전용 끝행
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select aa.* ");
+		sb.append("from ");
+		sb.append("    (select ROWNUM as rnum, a.* ");
+		sb.append("    from ");
+		sb.append("        (select * ");
+		sb.append("        from board ");
+		sb.append("        order by num desc) a ");
+		sb.append("    where ROWNUM <= ?) aa ");
+		sb.append("where rnum >= ? ");
+		
+		try {
+			con = DBManager.getConnection();
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setInt(1, endRow);
+			pstmt.setInt(2, startRow);
+			// 실행
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVO boardVO = new BoardVO();
+				boardVO.setNum(rs.getInt("num"));
+				boardVO.setUsername(rs.getString("username"));
+				boardVO.setPasswd(rs.getString("passwd"));
+				boardVO.setSubject(rs.getString("subject"));
+				boardVO.setContent(rs.getString("content"));
+				boardVO.setFilename(rs.getString("filename"));
+				boardVO.setIp(rs.getString("ip"));
+				boardVO.setRegDate(rs.getTimestamp("reg_date"));
+				boardVO.setRe_ref(rs.getInt("re_ref"));
+				boardVO.setRe_lev(rs.getInt("re_lev"));
+				boardVO.setRe_seq(rs.getInt("re_seq"));
+				list.add(boardVO);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(con, pstmt, rs);
+		}
+		
+		return list;
+	}
 	
 }
