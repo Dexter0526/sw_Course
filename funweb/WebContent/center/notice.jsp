@@ -1,3 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.exam.vo.BoardVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.exam.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -31,7 +35,33 @@
  <![endif]--> 
 
 </head>
+<%
+// 파라미터값 pageNum 가져오기
+String strPageNum = request.getParameter("pageNum");
+if (strPageNum == null) {
+	strPageNum = "1";
+}
+// 페이지 번호
+int pageNum = Integer.parseInt(strPageNum);
 
+// DAO 객체 준비
+BoardDao boardDao = BoardDao.getInstance();
+
+// 한페이지(화면)에 보여줄 글 개수
+int pageSize = 3;
+
+// 시작행번호 구하기
+int startRow = (pageNum - 1) * pageSize + 1;
+
+// board테이블 전체글개수 가져오기 메소드 호출
+int count = boardDao.getBoardCount();
+
+// 글목록 가져오기 메소드 호출
+List<BoardVO> boardList = boardDao.getBoards(startRow, pageSize);
+
+// 날짜 포맷 준비 SimpleDateFormat
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+%>
 <body>
 <div id="wrap">
 	<!-- 헤더 영역 -->
@@ -45,7 +75,7 @@
 	<jsp:include page="../include/nav_center.jsp" />
 <article>
     
-<h1>Notice</h1>
+<h1>Notice [전체글개수 : <%=count %>]</h1>
     
 <table id="notice">
   <tr>
@@ -55,111 +85,27 @@
     <th scope="col" class="tdate">date</th>
     <th scope="col" class="tread">read</th>
   </tr>
-  <tr>
-    <td>15</td>
-    <td class="left"> eget vehicula metus. In euismod sollicitudin lorem eu .</td>
-    <td>Host Admin</td>
-    <td>2011.05.11</td>
-    <td>15000</td>
-  </tr>
-  <tr>
-    <td>14</td>
-    <td class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-    <td>Sec Admin</td>
-    <td>2011.05.11</td>
-    <td>1500</td>
-  </tr>
-  <tr>
-    <td>13</td>
-    <td class="left">Vivamus viverra porttitor commodo.</td>
-    <td>Sec Admin</td>
-    <td>2011.05.11</td>
-    <td>15</td>
-  </tr>
-  <tr>
-    <td>12</td>
-    <td class="left">In pulvinar fermentum erat a tincidunt. Nulla id magna sit ...</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>15</td>
-  </tr>
-  <tr>
-    <td>11</td>
-    <td class="left">Nullam ac dignissim diam. Mauris vitae magna ipsum,</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>150</td>
-  </tr> 
-<tr>
-    <td>10</td>
-    <td class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>15000</td>
-  </tr>
-  <tr>
-    <td>9</td>
-    <td class="left">Vivamus viverra porttitor commodo.</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>150</td>
-  </tr>
-  <tr>
-    <td>8</td>
-    <td class="left">In pulvinar fermentum erat a tincidunt. Nulla id magna sit ...</td>
-    <td>Sec Admin</td>
-    <td>2011.05.11</td>
-    <td>15000</td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td class="left">Sed diam velit, dictum a iaculis sed, tempor sed mi.</td>
-    <td>Host Admin</td>
-    <td>2011.05.11</td>
-    <td>150</td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td class="left">Nullam ac dignissim diam. Mauris vitae magna ipsum,</td>
-    <td>Host Admin</td>
-    <td>2011.05.11</td>
-    <td>15</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td class="left"> eget vehicula metus. In euismod sollicitudin lorem eu.</td>
-    <td>Host Admin</td>
-    <td>2011.05.11</td>
-    <td>15000</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-    <td>Sec Admin</td>
-    <td>2011.05.11</td>
-    <td>1500</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td class="left">Vivamus viverra porttitor commodo.</td>
-    <td>Sec Admin</td>
-    <td>2011.05.11</td>
-    <td>15</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td class="left">In pulvinar fermentum erat a tincidunt. Nulla id magna sit ...</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>15</td>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td class="left">Nullam ac dignissim diam. Mauris vitae magna ipsum,</td>
-    <td>Web Admin</td>
-    <td>2011.05.11</td>
-    <td>150</td>
-  </tr>                   
+  <%
+  if (count > 0) {
+	  for (BoardVO boardVO : boardList) {
+		  %>
+		  <tr onclick="location.href='content.jsp?num=<%=boardVO.getNum() %>';">
+		  	<td><%=boardVO.getNum() %></td>
+		  	<td class="left"><%=boardVO.getSubject() %></td>
+		  	<td><%=boardVO.getUsername() %></td>
+		  	<td><%=sdf.format(boardVO.getRegDate()) %></td>
+		  	<td><%=boardVO.getReadcount() %></td>
+		  </tr>
+		  <%
+	  }
+  } else { // count == 0
+	  %>
+	  <tr>
+	  	<td colspan="5">게시판 글이 없습니다.</td>
+	  </tr>
+	  <%
+  }
+  %>   
 </table>
 
 <div id="table_search">
@@ -173,7 +119,60 @@
 <div class="clear"></div>
  
 <div id="page_control">
-	<a href="#">Prev</a> <a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="3">6</a> <a href="#">7</a> <a href="#">8</a> <a href="#">9</a> <a href="#">10</a>  <a href="#">Next</a>
+<%
+if (count > 0) {
+	// 총 페이지 개수 구하기
+	//  전체 글개수 / 한페이지당 글개수 (+ 1 : 나머지 있을때)
+	int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+	
+	// 페이지블록 수 설정
+	int pageBlock = 5;
+	
+	// 시작페이지번호 startPage 구하기
+	// pageNum값이 1~5 사이면 -> 시작페이지는 항상 1이 나와야 함
+	
+	// ((1 - 1) / 5) * 5 + 1 -> 1
+	// ((2 - 1) / 5) * 5 + 1 -> 1
+	// ((3 - 1) / 5) * 5 + 1 -> 1
+	// ((4 - 1) / 5) * 5 + 1 -> 1
+	// ((5 - 1) / 5) * 5 + 1 -> 1
+	
+	// ((6 - 1) / 5) * 5 + 1 -> 6
+	// ((7 - 1) / 5) * 5 + 1 -> 6
+	// ((8 - 1) / 5) * 5 + 1 -> 6
+	// ((9 - 1) / 5) * 5 + 1 -> 6
+	// ((10- 1) / 5) * 5 + 1 -> 6
+	int startPage = ((pageNum - 1) / pageBlock) * pageBlock + 1;
+	
+	// 끝페이지번호 endPage 구하기
+	int endPage = startPage + pageBlock - 1;
+	if (endPage > pageCount) {
+		endPage = pageCount;
+	}
+	
+	// [이전] 출력
+	if (startPage > pageBlock) {
+		%>
+		<a href="notice.jsp?pageNum=<%=startPage-pageBlock %>">[이전]</a>
+		<%
+	}
+	
+	// 페이지블록 페이지5개 출력
+	for (int i=startPage; i<=endPage; i++) {
+		%>
+		<a href="notice.jsp?pageNum=<%=i %>"><%=i %></a>
+		<%
+	} // for
+	
+	// [다음] 출력
+	if (endPage < pageCount) {
+		%>
+		<a href="notice.jsp?pageNum=<%=startPage+pageBlock %>">[다음]</a>
+		<%
+	}
+	
+} // if
+%>
 </div>
     
 </article>
