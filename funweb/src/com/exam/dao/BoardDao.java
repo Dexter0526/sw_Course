@@ -226,8 +226,71 @@ public class BoardDao {
 	} // getBoard method
 	
 	
+	// 게시글 패스워드비교(로그인 안한 사용자가 수행함)
+	public boolean isPasswdEqual(int num, String passwd) {
+		System.out.println("num : " + num + ", passwd : " + passwd);
+		
+		boolean result = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT COUNT(*) ");
+		sb.append("FROM board ");
+		sb.append("WHERE num = ? ");
+		sb.append("AND passwd = ? ");
+		
+		try {
+			con = DBManager.getConnection();
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setInt(1, num);
+			pstmt.setString(2, passwd);
+			// 실행
+			rs = pstmt.executeQuery();
+			
+			rs.next(); // 커서 내리기
+			
+			int count = rs.getInt(1); // 카운트값 가져오기
+			if (count == 1) {
+				result = true; // 게시글 패스워드 같음
+			} else { // count == 0
+				result = false; // 게시글 패스워드 다름
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt, rs);
+		}
+		return result;
+	} // isPasswdEqual method
 	
 	
+	// 게시글 수정하기 메소드
+	public void updateBoard(BoardVO boardVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "";
+		sql  = "UPDATE board ";
+		sql += "SET subject = ?, content = ? ";
+		sql += "WHERE num = ? ";
+		
+		try {
+			con = DBManager.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, boardVO.getSubject());
+			pstmt.setString(2, boardVO.getContent());
+			pstmt.setInt(3, boardVO.getNum());
+			// 실행
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt);
+		}
+	} // updateBoard method
 	
 	
 	

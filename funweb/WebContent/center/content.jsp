@@ -20,6 +20,9 @@
 
 </head>
 <%
+// 페이지번호 pageNum 파라미터값 가져오기
+String pageNum = request.getParameter("pageNum");
+
 // 글번호 num 파라미터값 가져오기
 int num = Integer.parseInt(request.getParameter("num"));
 
@@ -75,10 +78,10 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 </table>
 
 <div id="table_search">
-	<input type="button" value="글수정" class="btn" onclick="location.href='update.jsp';">
+	<input type="button" value="글수정" class="btn" onclick="location.href='update.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
 	<input type="button" value="글삭제" class="btn" onclick="location.href='delete.jsp';">
 	<input type="button" value="답글쓰기" class="btn" onclick="location.href='reWrite.jsp';">
-	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp';">
+	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>';">
 </div>
 
 

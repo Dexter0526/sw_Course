@@ -89,7 +89,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
   if (count > 0) {
 	  for (BoardVO boardVO : boardList) {
 		  %>
-		  <tr onclick="location.href='content.jsp?num=<%=boardVO.getNum() %>';">
+		  <tr onclick="location.href='content.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
 		  	<td><%=boardVO.getNum() %></td>
 		  	<td class="left"><%=boardVO.getSubject() %></td>
 		  	<td><%=boardVO.getUsername() %></td>
@@ -160,7 +160,15 @@ if (count > 0) {
 	// 페이지블록 페이지5개 출력
 	for (int i=startPage; i<=endPage; i++) {
 		%>
-		<a href="notice.jsp?pageNum=<%=i %>"><%=i %></a>
+		<a href="notice.jsp?pageNum=<%=i %>">
+		<%
+		if (i == pageNum) {
+			%><span style="font-weight: bold;">[<%=i %>]</span><%
+		} else {
+			%><%=i %><%
+		}
+		%>
+		</a>
 		<%
 	} // for
 	

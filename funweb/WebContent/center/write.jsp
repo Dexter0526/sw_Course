@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -17,19 +15,6 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
 <![endif]-->
 
-
-<!--[if IE 6]>
- <script src="../script/DD_belatedPNG.js"></script>
- <script>
-   /* EXAMPLE */
-   DD_belatedPNG.fix('#wrap');
-   DD_belatedPNG.fix('#sub_img');   
-   DD_belatedPNG.fix('#sub_img_center'); 
-   DD_belatedPNG.fix('#sub_img_member'); 
-
- </script>
- <![endif]--> 
-
 </head>
 
 <body>
@@ -44,19 +29,17 @@
 	<%-- nav 영역 --%>
 	<jsp:include page="../include/nav_center.jsp" />
 
-<%--세션값 가져오기 --%>
-<%
-// 세션값 가져오기
-String id = (String) session.getAttribute("id");
-%>
+<%-- 세션값 가져오기 --%>
+<% String id = (String) session.getAttribute("id"); %>
 
 <article>
     
 <h1>Notice Write</h1>
+
 <form action="writeProcess.jsp" method="post" name="frm">
 <table id="notice">
 <%
-if(id == null){
+if (id == null) { // 로그인 안했을때
 	%>
 	<tr>
 		<th class="twrite">이름</th>
@@ -71,18 +54,17 @@ if(id == null){
 		</td>
 	</tr>
 	<%
-}else{
+} else { // id != null  로그인 했을때
 	%>
 	<tr>
 		<th class="twrite">아이디</th>
 		<td class="left" width="300">
-			<input type="text" name="username" value="<%=id %>" readonly="readonly">
+			<input type="text" name="username" value="<%=id %>" readonly>
 		</td>
 	</tr>
 	<%
 }
 %>
-	
 	<tr>
 		<th class="twrite">제목</th>
 		<td class="left">
@@ -97,13 +79,13 @@ if(id == null){
 	</tr>
 </table>
 
-
 <div id="table_search">
 	<input type="submit" value="글쓰기" class="btn">
 	<input type="reset" value="다시작성" class="btn">
-	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp'">
+	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp';">
 </div>
-</form>   
+</form>
+
 </article>
     
     
