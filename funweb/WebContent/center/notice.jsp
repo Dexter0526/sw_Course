@@ -36,7 +36,12 @@
 
 </head>
 <%
-// 파라미터값 pageNum 가져오기
+// 파라미터값 search  pageNum 가져오기
+String search = request.getParameter("search"); // 검색어
+if (search == null) {
+	search = "";
+}
+
 String strPageNum = request.getParameter("pageNum");
 if (strPageNum == null) {
 	strPageNum = "1";
@@ -54,10 +59,10 @@ int pageSize = 3;
 int startRow = (pageNum - 1) * pageSize + 1;
 
 // board테이블 전체글개수 가져오기 메소드 호출
-int count = boardDao.getBoardCount();
+int count = boardDao.getBoardCount(search);
 
 // 글목록 가져오기 메소드 호출
-List<BoardVO> boardList = boardDao.getBoards(startRow, pageSize);
+List<BoardVO> boardList = boardDao.getBoards(startRow, pageSize, search);
 
 // 날짜 포맷 준비 SimpleDateFormat
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
@@ -112,9 +117,12 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 	<input type="button" value="글쓰기" class="btn" onclick="location.href='write.jsp';">
 </div>
 
+<form action="notice.jsp" method="get">
 <div id="table_search">
-	<input name="" type="text" class="input_box"> <input type="button" value="Search" class="btn">
+	<input type="text" name="search" value="<%=search %>" class="input_box">
+	<input type="submit" value="제목검색" class="btn">
 </div>
+</form>
 
 <div class="clear"></div>
  
@@ -153,14 +161,14 @@ if (count > 0) {
 	// [이전] 출력
 	if (startPage > pageBlock) {
 		%>
-		<a href="notice.jsp?pageNum=<%=startPage-pageBlock %>">[이전]</a>
+		<a href="notice.jsp?pageNum=<%=startPage-pageBlock %>&search=<%=search %>">[이전]</a>
 		<%
 	}
 	
 	// 페이지블록 페이지5개 출력
 	for (int i=startPage; i<=endPage; i++) {
 		%>
-		<a href="notice.jsp?pageNum=<%=i %>">
+		<a href="notice.jsp?pageNum=<%=i %>&search=<%=search %>">
 		<%
 		if (i == pageNum) {
 			%><span style="font-weight: bold;">[<%=i %>]</span><%
@@ -175,7 +183,7 @@ if (count > 0) {
 	// [다음] 출력
 	if (endPage < pageCount) {
 		%>
-		<a href="notice.jsp?pageNum=<%=startPage+pageBlock %>">[다음]</a>
+		<a href="notice.jsp?pageNum=<%=startPage+pageBlock %>&search=<%=search %>">[다음]</a>
 		<%
 	}
 	

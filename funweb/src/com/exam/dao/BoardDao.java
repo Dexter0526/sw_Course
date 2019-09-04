@@ -82,6 +82,7 @@ public class BoardDao {
 		}
 	} // insertBoard method
 	
+/*
 	// 시작행번호부터 갯수만큼 가져오기(페이징)
 	public List<BoardVO> getBoards(int startRow, int pageSize) {
 		List<BoardVO> list = new ArrayList<BoardVO>();
@@ -135,6 +136,131 @@ public class BoardDao {
 	} // getBoards method
 	
 	
+	// 검색어로 검색된 행의 시작행번호부터 갯수만큼 가져오기(페이징)
+	public List<BoardVO> getBoards(int startRow, int pageSize, String search) {
+		List<BoardVO> list = new ArrayList<BoardVO>();
+		int endRow = startRow + pageSize - 1; // 오라클전용 끝행번호
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT aa.* ");
+		sb.append("FROM ");
+		sb.append("    (SELECT ROWNUM AS rnum, a.* ");
+		sb.append("    FROM ");
+		sb.append("        (SELECT * ");
+		sb.append("        FROM board ");
+		sb.append("        WHERE subject LIKE ? ");
+		sb.append("        ORDER BY num DESC) a ");
+		sb.append("    WHERE ROWNUM <= ?) aa ");
+		sb.append("WHERE rnum >= ? ");
+		
+		try {
+			con = DBManager.getConnection();
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setString(1, "%" + search + "%");
+			pstmt.setInt(2, endRow);
+			pstmt.setInt(3, startRow);
+			// 실행
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardVO boardVO = new BoardVO();
+				boardVO.setNum(rs.getInt("num"));
+				boardVO.setUsername(rs.getString("username"));
+				boardVO.setPasswd(rs.getString("passwd"));
+				boardVO.setSubject(rs.getString("subject"));
+				boardVO.setContent(rs.getString("content"));
+				boardVO.setFilename(rs.getString("filename"));
+				boardVO.setReadcount(rs.getInt("readcount"));
+				boardVO.setIp(rs.getString("ip"));
+				boardVO.setRegDate(rs.getTimestamp("reg_date"));
+				boardVO.setRe_ref(rs.getInt("re_ref"));
+				boardVO.setRe_lev(rs.getInt("re_lev"));
+				boardVO.setRe_seq(rs.getInt("re_seq"));
+				// 리스트에 vo객체 한개 추가
+				list.add(boardVO);
+			} // while
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt, rs);
+		}
+		return list;
+	} // getBoards method
+*/
+	
+	
+	public List<BoardVO> getBoards(int startRow, int pageSize, String search) {
+		List<BoardVO> list = new ArrayList<BoardVO>();
+		int endRow = startRow + pageSize - 1; // 오라클전용 끝행번호
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT aa.* ");
+		sb.append("FROM ");
+		sb.append("    (SELECT ROWNUM AS rnum, a.* ");
+		sb.append("    FROM ");
+		sb.append("        (SELECT * ");
+		sb.append("        FROM board ");
+		
+		// 검색어 search가 있을때는 검색조건절 where를 추가함
+		if (!(search == null || search.equals(""))) {
+			sb.append("        WHERE subject LIKE ? ");
+		}
+		
+		sb.append("        ORDER BY num DESC) a ");
+		sb.append("    WHERE ROWNUM <= ?) aa ");
+		sb.append("WHERE rnum >= ? ");
+		
+		try {
+			con = DBManager.getConnection();
+			pstmt = con.prepareStatement(sb.toString());
+			
+			if (!(search == null || search.equals(""))) {
+				// 검색어가 있을때
+				pstmt.setString(1, "%" + search + "%");
+				pstmt.setInt(2, endRow);
+				pstmt.setInt(3, startRow);
+			} else {
+				// 검색어가 없을때
+				pstmt.setInt(1, endRow);
+				pstmt.setInt(2, startRow);
+			}
+			
+			// 실행
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardVO boardVO = new BoardVO();
+				boardVO.setNum(rs.getInt("num"));
+				boardVO.setUsername(rs.getString("username"));
+				boardVO.setPasswd(rs.getString("passwd"));
+				boardVO.setSubject(rs.getString("subject"));
+				boardVO.setContent(rs.getString("content"));
+				boardVO.setFilename(rs.getString("filename"));
+				boardVO.setReadcount(rs.getInt("readcount"));
+				boardVO.setIp(rs.getString("ip"));
+				boardVO.setRegDate(rs.getTimestamp("reg_date"));
+				boardVO.setRe_ref(rs.getInt("re_ref"));
+				boardVO.setRe_lev(rs.getInt("re_lev"));
+				boardVO.setRe_seq(rs.getInt("re_seq"));
+				// 리스트에 vo객체 한개 추가
+				list.add(boardVO);
+			} // while
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt, rs);
+		}
+		return list;
+	} // getBoards method
+	
+
+/*
 	// 게시판(board) 테이블 레코드 개수 가져오기 메소드
 	public int getBoardCount() {
 		int count = 0;
@@ -157,6 +283,73 @@ public class BoardDao {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(con, stmt, rs);
+		}
+		return count;
+	} // getBoardCount method
+	
+	
+	public int getBoardCount(String search) {
+		int count = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DBManager.getConnection();
+			String sql = "SELECT COUNT(*) FROM board ";
+			sql += "WHERE subject LIKE ? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+search+"%");
+			// 실행
+			rs = pstmt.executeQuery(sql);
+			
+			rs.next(); // 커서 옮겨서 행 존재유무 true/false 리턴
+			
+			count = rs.getInt(1); // 행개수 count변수에 저장
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt, rs);
+		}
+		return count;
+	} // getBoardCount method
+*/
+	
+	
+	public int getBoardCount(String search) {
+		int count = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DBManager.getConnection();
+			String sql = "SELECT COUNT(*) FROM board ";
+			
+			// 동적(Dynamic) SQL
+			if (!(search == null || search.equals(""))) {
+				sql += "WHERE subject LIKE ? ";
+			}
+			
+			pstmt = con.prepareStatement(sql);
+			
+			
+			if (!(search == null || search.equals(""))) {
+				pstmt.setString(1, "%"+search+"%");
+			}
+			
+			// 실행
+			rs = pstmt.executeQuery();
+			
+			rs.next(); // 커서 옮겨서 행 존재유무 true/false 리턴
+			
+			count = rs.getInt(1); // 행개수 count변수에 저장
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt, rs);
 		}
 		return count;
 	} // getBoardCount method
