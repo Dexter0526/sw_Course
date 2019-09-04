@@ -293,5 +293,27 @@ public class BoardDao {
 	} // updateBoard method
 	
 	
+	// 글번호에 해당하는 글 한개 삭제하기 메소드
+	public void deleteBoard(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = DBManager.getConnection();
+			String sql = "DELETE FROM board WHERE num = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			// 실행
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(con, pstmt);
+		}
+	} // deleteBoard method
+	
+	
+	
+	
 	
 }

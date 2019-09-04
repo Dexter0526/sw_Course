@@ -15,7 +15,7 @@ BoardDao boardDao = BoardDao.getInstance();
 BoardVO boardVO = boardDao.getBoard(num);
 %>
 
-<%-- 세션값 가져오기 --%>
+<%-- 세션값 가져오기 (로그인 여부 확인 위해) --%>
 <% String id = (String) session.getAttribute("id"); %>
 
 <%!
@@ -29,15 +29,15 @@ BoardVO boardVO = boardDao.getBoard(num);
 %>
 
 <%
-// *로그인 안한 사용자가 로그인한 사용자 글을 수정하는 경우
-// *로그인한 사용자가 로그인 안한 사용자 글을 수정하는 경우
+// *로그인 안한 사용자가 로그인한 사용자 글을 삭제하는 경우
+// *로그인한 사용자가 로그인 안한 사용자 글을 삭제하는 경우
 // *로그인한 사용자의 경우, 세션값 id가 게시글 작성자명과 다른 경우
 // "수정권한없음" 알림 후 글목록 페이지로 강제이동
 if (hasNotAuth(id, boardVO)) {
 	//response.sendRedirect("notice.jsp?pageNum=" + pageNum);
 	%>
 	<script>
-		alert('수정 권한이 없습니다.');
+		alert('삭제 권한이 없습니다.');
 		//location.href = 'content.jsp?num=<%=num%>&pageNum=<%=pageNum %>';
 		history.back();
 	</script>
@@ -58,6 +58,18 @@ if (hasNotAuth(id, boardVO)) {
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
 <![endif]-->
 
+<script>
+function check() {
+	var objPasswd = document.frm.passwd;
+	if (objPasswd != null) {
+		if (objPasswd.value.length == 0) {
+			alert('게시글 패스워드는 필수 입력사항입니다.');
+			objPasswd.focus();
+			return false;
+		}
+	}
+}
+</script>
 </head>
 
 
@@ -75,64 +87,37 @@ if (hasNotAuth(id, boardVO)) {
 
 <article>
     
-<h1>Notice Update</h1>
+<h1>Notice Delete</h1>
 
-<form action="updateProcess.jsp" method="post" name="frm" onsubmit="return check();">
-<%-- 수정할 글번호는 눈에 안보이는 hidden 타입 입력요소 사용 --%>
-<input type="hidden" name="pageNum" value="<%=pageNum %>">
-<input type="hidden" name="num" value="<%=num %>">
-<table id="notice">
 <%
-if (id == null) { // 로그인 안했을때
+if (id == null) { // 로그인 안한 사용자
 	%>
-	<tr>
-		<th class="twrite">이름</th>
-		<td class="left" width="300">
-			<input type="text" name="username" value="<%=boardVO.getUsername()%>" readonly="readonly">
-		</td>
-	</tr>
-	<tr>
-		<th class="twrite">패스워드</th>
-		<td class="left">
-			<input type="password" name="passwd" placeholder="본인확인 패스워드 입력">
-		</td>
-	</tr>
+<form action="deleteProcess.jsp" method="post" name="frm" onsubmit="return check();">
+	<%-- 수정할 글번호는 눈에 안보이는 hidden 타입 입력요소 사용 --%>
+	<input type="hidden" name="pageNum" value="<%=pageNum %>">
+	<input type="hidden" name="num" value="<%=num %>">
+	
+	<table id="notice">
+		<tr>
+			<th class="twrite">글 패스워드</th>
+			<td><input type="password" name="passwd"></td>
+		</tr>
+	</table>
+	
+	<div id="table_search">
+		<input type="submit" value="글삭제" class="btn">
+		<input type="reset" value="다시작성" class="btn">
+		<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>';">
+	</div>
+</form>
 	<%
-} else { // id != null  로그인 했을때
-	%>
-	<tr>
-		<th class="twrite">아이디</th>
-		<td class="left" width="300">
-			<input type="text" name="username" value="<%=id %>" readonly>
-		</td>
-	</tr>
-	<%
+} else { // id != null  로그인한 사용자
+	response.sendRedirect("deleteProcess.jsp?num=" + num + "&pageNum=" + pageNum);
 }
 %>
-	<tr>
-		<th class="twrite">제목</th>
-		<td class="left">
-			<input type="text" name="subject" value="<%=boardVO.getSubject() %>">
-		</td>
-	</tr>
-	<tr>
-		<th class="twrite">내용</th>
-		<td class="left">
-			<textarea name="content" rows="13" cols="40"><%=boardVO.getContent() %></textarea>
-		</td>
-	</tr>
-</table>
-
-<div id="table_search">
-	<input type="submit" value="글수정" class="btn">
-	<input type="reset" value="다시작성" class="btn">
-	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>';">
-</div>
-</form>
 
 </article>
-    
-    
+
     
 	<div class="clear"></div>
     
@@ -140,27 +125,6 @@ if (id == null) { // 로그인 안했을때
 	<jsp:include page="../include/footer.jsp" />
 </div>
 
-
-<script>
-function check() {
-	// 로그인 안한 사용자일 경우 패스워드 입력여부 확인
-	var objPasswd = document.frm.passwd;
-	if (objPasswd != null) {
-		if (objPasswd.value.length == 0) {
-			alert('게시글 패스워드는 필수 입력사항입니다.');
-			objPasswd.focus();
-			return false;
-		}
-	}
-	
-	// 글수정 의도 확인
-	var result = confirm('<%=num %>번 글을 정말로 수정하시겠습니까?');
-	if (result == false) {
-		return false;
-	}
-	
-}
-</script>
 </body>
 </html>   
 

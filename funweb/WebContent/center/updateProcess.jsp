@@ -21,11 +21,13 @@ BoardDao boardDao = BoardDao.getInstance();
 
 // BoardVO dbBoardVO = boardDao.getBoard(boardVO.getNum());
 
+// 세션값 가져오기 (로그인 여부 확인)
+String id = (String) session.getAttribute("id");
 
 // 로그인 안한 사용자(글패스워드값이 있는 사용자)는
 // [패스워드 일치 여부]를 확인 후 일치하면 글수정하고,
 // 일치하지 않으면 "글패스워드 다름" 뒤로가기
-if (boardVO.getPasswd() != null) {
+if (id == null) { // boardVO.getPasswd() != null
 	boolean isPasswdEqual = boardDao.isPasswdEqual(boardVO.getNum(), boardVO.getPasswd());
 	if (!isPasswdEqual) { // !boardVO.getPasswd().equals(dbBoardVO.getPasswd())
 		%>

@@ -18,6 +18,7 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
 <![endif]-->
 
+
 </head>
 <%
 // 페이지번호 pageNum 파라미터값 가져오기
@@ -77,9 +78,10 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 	</tr>
 </table>
 
+
 <div id="table_search">
 	<input type="button" value="글수정" class="btn" onclick="location.href='update.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
-	<input type="button" value="글삭제" class="btn" onclick="location.href='delete.jsp';">
+	<input type="button" value="글삭제" class="btn" onclick="checkDelete();">
 	<input type="button" value="답글쓰기" class="btn" onclick="location.href='reWrite.jsp';">
 	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>';">
 </div>
@@ -93,6 +95,16 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 	<jsp:include page="../include/footer.jsp" />
 </div>
 
+
+<script>
+	function checkDelete() {
+		var result = confirm('<%=boardVO.getNum() %>번 글을 정말로 삭제하시겠습니까?');
+		
+		if (result == true) {
+			location.href = 'delete.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';
+		}
+	}
+</script>
 </body>
 </html>   
 
