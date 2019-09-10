@@ -12,52 +12,25 @@ public class MemberVO {
 	private String tel;
 	private String mtel;
 	private Timestamp regDate;
-	
-	public MemberVO(String id, String passwd, String name, String email, String address, String tel, String mtel,
-			Timestamp regDate) {
-		this.id = id;
-		this.passwd = passwd;
-		this.name = name;
-		this.email = email;
-		this.address = address;
-		this.tel = tel;
-		this.mtel = mtel;
-		this.regDate = regDate;
-	}
-	public MemberVO() {
-		// TODO Auto-generated constructor stub
-	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-
 	public String getTel() {
 		return tel;
 	}
-
-
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-
-
 	public String getMtel() {
 		return mtel;
 	}
-
-
 	public void setMtel(String mtel) {
 		this.mtel = mtel;
 	}
-
-
 	public String getId() {
 		return id;
 	}
@@ -89,6 +62,7 @@ public class MemberVO {
 		this.regDate = regDate;
 	}
 	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -97,6 +71,5 @@ public class MemberVO {
 				.append(", mtel=").append(mtel).append(", regDate=").append(regDate).append("]");
 		return builder.toString();
 	}
-	
 	
 }

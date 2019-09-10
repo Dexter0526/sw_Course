@@ -23,7 +23,7 @@ function useId() {
 	// DAO 객체 준비
 	MemberDao memberDao = MemberDao.getInstance();
 	// 아이디 중복확인 메소드 호출
-	boolean isIdDup = memberDao.isIdDuplicaed(userid);
+	boolean isIdDup = memberDao.isIdDuplicated(userid);
 	if (isIdDup) { // isIdDup == true  아이디중복
 		%>
 		아이디 중복, 사용중인 ID입니다.<br>

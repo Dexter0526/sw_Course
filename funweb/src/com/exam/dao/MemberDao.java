@@ -17,31 +17,38 @@ public class MemberDao {
 	private MemberDao() {
 	}
 	
-	public boolean isIdDuplicaed(String id) {
-		boolean isIdDuplicaed = false;
-		int count = 0;
+	// 아이디 중복여부 확인
+	public boolean isIdDuplicated(String id) {
+		// 중복이면 true, 중복아니면 false
+		boolean isIdDuplicated = false;
+		int count = 0; // id값이 일치하는 행의 개수
 		Connection con = null;
-		PreparedStatement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		String sql = "";
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "select count(*) as cnt from member where id = ?";
-			stmt = con.prepareStatement(sql);
-			stmt.setString(1, id);
-			rs = stmt.executeQuery();
-			rs.next();
-			if(rs.getInt(1) != 0) {
-				isIdDuplicaed = true;	// 사용중 아이디
+			sql = "SELECT COUNT(*) AS cnt FROM member WHERE id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			rs.next(); // 커서 옮기기
+			count = rs.getInt(1);
+			if (count == 1) {
+				isIdDuplicated = true; // 중복이다
+			} else { // count == 0
+				isIdDuplicated = false; // 중복아니다
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			DBManager.close(con, stmt, rs);
+		} finally {
+			DBManager.close(con, pstmt, rs);
 		}
-		
-		return isIdDuplicaed;
-	}
+		return isIdDuplicated;
+	} // isIdDuplicated method
+	
 
 	public int insertMember(MemberVO vo) {
 		Connection con = null;
@@ -94,13 +101,6 @@ public class MemberDao {
 				memberVO.setId(rs.getString("id"));
 				memberVO.setPasswd(rs.getString("passwd"));
 				memberVO.setName(rs.getString("name"));
-				
-				// rs.getInt("age");  숫자값이 null이 아니고 항상 존재할때.
-				String strAge = rs.getString("age");
-				if (strAge != null) { // "33"
-
-				}
-				
 				memberVO.setEmail(rs.getString("email"));
 				memberVO.setRegDate(rs.getTimestamp("reg_date"));
 			}
@@ -175,13 +175,7 @@ public class MemberDao {
 				memberVO.setId(rs.getString("id"));
 				memberVO.setPasswd(rs.getString("passwd"));
 				memberVO.setName(rs.getString("name"));
-				
-				// rs.getInt("age");  숫자값이 null이 아니고 항상 존재할때.
-				String strAge = rs.getString("age");
-				if (strAge != null) { // "33"
-
-				}
-				
+			
 				memberVO.setEmail(rs.getString("email"));
 				memberVO.setRegDate(rs.getTimestamp("reg_date"));
 				
@@ -215,8 +209,6 @@ public class MemberDao {
 			sql = "UPDATE member SET name=?, age=?, gender=?, email=? WHERE id=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, memberVO.getName());
-			
-			//pstmt.setInt(2, memberVO.getAge()); // age필드값이 항상 있으면
 			
 			pstmt.setString(4, memberVO.getEmail());
 			pstmt.setString(5, memberVO.getId());

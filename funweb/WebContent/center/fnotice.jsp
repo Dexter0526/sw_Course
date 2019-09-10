@@ -80,7 +80,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 	<jsp:include page="../include/nav_center.jsp" />
 <article>
     
-<h1>Notice [전체글개수 : <%=count %>]</h1>
+<h1>File Notice [전체글개수 : <%=count %>]</h1>
     
 <table id="notice">
   <tr>
@@ -94,7 +94,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
   if (count > 0) {
 	  for (BoardVO boardVO : boardList) {
 		  %>
-		  <tr onclick="location.href='content.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
+		  <tr onclick="location.href='fcontent.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
 		  	<td><%=boardVO.getNum() %></td>
 		  	<td class="left">
 		  		<%
@@ -125,10 +125,10 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 </table>
 
 <div id="table_search">
-	<input type="button" value="글쓰기" class="btn" onclick="location.href='write.jsp';">
+	<input type="button" value="글쓰기" class="btn" onclick="location.href='fwrite.jsp';">
 </div>
 
-<form action="notice.jsp" method="get">
+<form action="fnotice.jsp" method="get">
 <div id="table_search">
 	<input type="text" name="search" value="<%=search %>" class="input_box">
 	<input type="submit" value="제목검색" class="btn">
@@ -172,14 +172,14 @@ if (count > 0) {
 	// [이전] 출력
 	if (startPage > pageBlock) {
 		%>
-		<a href="notice.jsp?pageNum=<%=startPage-pageBlock %>&search=<%=search %>">[이전]</a>
+		<a href="fnotice.jsp?pageNum=<%=startPage-pageBlock %>&search=<%=search %>">[이전]</a>
 		<%
 	}
 	
 	// 페이지블록 페이지5개 출력
 	for (int i=startPage; i<=endPage; i++) {
 		%>
-		<a href="notice.jsp?pageNum=<%=i %>&search=<%=search %>">
+		<a href="fnotice.jsp?pageNum=<%=i %>&search=<%=search %>">
 		<%
 		if (i == pageNum) {
 			%><span style="font-weight: bold;">[<%=i %>]</span><%
@@ -194,7 +194,7 @@ if (count > 0) {
 	// [다음] 출력
 	if (endPage < pageCount) {
 		%>
-		<a href="notice.jsp?pageNum=<%=startPage+pageBlock %>&search=<%=search %>">[다음]</a>
+		<a href="fnotice.jsp?pageNum=<%=startPage+pageBlock %>&search=<%=search %>">[다음]</a>
 		<%
 	}
 	

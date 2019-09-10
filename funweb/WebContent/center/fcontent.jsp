@@ -1,3 +1,5 @@
+<%@page import="com.exam.vo.AttachVO"%>
+<%@page import="com.exam.dao.AttachDao"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.exam.vo.BoardVO"%>
 <%@page import="com.exam.dao.BoardDao"%>
@@ -27,7 +29,7 @@ String pageNum = request.getParameter("pageNum");
 // 글번호 num 파라미터값 가져오기
 int num = Integer.parseInt(request.getParameter("num"));
 
-// DAO 객체준비
+// BoardDAO 객체준비
 BoardDao boardDao = BoardDao.getInstance();
 
 // 조회수 1증가시키는 메소드 호출
@@ -38,6 +40,13 @@ BoardVO boardVO = boardDao.getBoard(num);
 
 // 글작성날짜 형식 "yyyy년MM월dd일 hh시mm분ss초"
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초");
+
+
+// AttachDao 객체준비
+AttachDao attachDao = AttachDao.getInstance();
+
+// 글번호에 해당하는 첨부파일정보 가져오기
+AttachVO attachVO = attachDao.getAttach(num);
 %>
 <body>
 <div id="wrap">
@@ -53,7 +62,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 
 <article>
     
-<h1>Notice Content</h1>
+<h1>File Notice Content</h1>
 
 <table id="notice">
 	<tr>
@@ -73,6 +82,28 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 		<td class="left" colspan="3"><%=boardVO.getSubject() %></td>
 	</tr>
 	<tr>
+		<th class="twrite">파일</th>
+		<td class="left" colspan="3">
+			<%
+			if (attachVO != null) {
+				if (attachVO.getFiletype().equals("I")) { // 이미지 타입
+					%>
+					<a href="../upload/<%=attachVO.getFilename() %>">
+						<img src="../upload/<%=attachVO.getFilename() %>" width="50" height="50">
+					</a>
+					<%
+				} else {
+					%>
+					<a href="../upload/<%=attachVO.getFilename() %>">
+						<%=attachVO.getFilename() %>
+					</a>
+					<%
+				}
+			}
+			%>
+		</td>
+	</tr>
+	<tr>
 		<th class="twrite">글내용</th>
 		<td class="left" colspan="3"><pre><%=boardVO.getContent() %></pre></td>
 	</tr>
@@ -83,7 +114,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 	<input type="button" value="글수정" class="btn" onclick="location.href='update.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
 	<input type="button" value="글삭제" class="btn" onclick="checkDelete();">
 	<input type="button" value="답글쓰기" class="btn" onclick="location.href='reWrite.jsp?reRef=<%=boardVO.getReRef() %>&reLev=<%=boardVO.getReLev() %>&reSeq=<%=boardVO.getReSeq() %>';">
-	<input type="button" value="목록보기" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>';">
+	<input type="button" value="목록보기" class="btn" onclick="location.href='fnotice.jsp?pageNum=<%=pageNum %>';">
 </div>
 
 

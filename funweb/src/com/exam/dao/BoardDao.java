@@ -3,6 +3,7 @@ package com.exam.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,21 +59,20 @@ public class BoardDao {
 		try {
 			con = DBManager.getConnection();
 			
-			sb.append("INSERT INTO board (num, username, passwd, subject, content, filename, readcount, ip, reg_date, re_ref, re_lev, re_seq) ");
-			sb.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			sb.append("INSERT INTO board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ");
+			sb.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, boardVO.getNum());
 			pstmt.setString(2, boardVO.getUsername());
 			pstmt.setString(3, boardVO.getPasswd());
 			pstmt.setString(4, boardVO.getSubject());
 			pstmt.setString(5, boardVO.getContent());
-			pstmt.setString(6, boardVO.getFilename());
-			pstmt.setInt(7, boardVO.getReadcount());
-			pstmt.setString(8, boardVO.getIp());
-			pstmt.setTimestamp(9, boardVO.getRegDate());
-			pstmt.setInt(10, boardVO.getRe_ref());
-			pstmt.setInt(11, boardVO.getRe_lev());
-			pstmt.setInt(12, boardVO.getRe_seq());
+			pstmt.setInt(6, boardVO.getReadcount());
+			pstmt.setString(7, boardVO.getIp());
+			pstmt.setTimestamp(8, boardVO.getRegDate());
+			pstmt.setInt(9, boardVO.getReRef());
+			pstmt.setInt(10, boardVO.getReLev());
+			pstmt.setInt(11, boardVO.getReSeq());
 			// 실행
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -213,7 +213,7 @@ public class BoardDao {
 			sb.append("        WHERE subject LIKE ? ");
 		}
 		
-		sb.append("        ORDER BY num DESC) a ");
+		sb.append("        ORDER BY re_ref DESC, re_seq ASC) a ");
 		sb.append("    WHERE ROWNUM <= ?) aa ");
 		sb.append("WHERE rnum >= ? ");
 		
@@ -241,13 +241,12 @@ public class BoardDao {
 				boardVO.setPasswd(rs.getString("passwd"));
 				boardVO.setSubject(rs.getString("subject"));
 				boardVO.setContent(rs.getString("content"));
-				boardVO.setFilename(rs.getString("filename"));
 				boardVO.setReadcount(rs.getInt("readcount"));
 				boardVO.setIp(rs.getString("ip"));
 				boardVO.setRegDate(rs.getTimestamp("reg_date"));
-				boardVO.setRe_ref(rs.getInt("re_ref"));
-				boardVO.setRe_lev(rs.getInt("re_lev"));
-				boardVO.setRe_seq(rs.getInt("re_seq"));
+				boardVO.setReRef(rs.getInt("re_ref"));
+				boardVO.setReLev(rs.getInt("re_lev"));
+				boardVO.setReSeq(rs.getInt("re_seq"));
 				// 리스트에 vo객체 한개 추가
 				list.add(boardVO);
 			} // while
@@ -402,13 +401,12 @@ public class BoardDao {
 				boardVO.setPasswd(rs.getString("passwd"));
 				boardVO.setSubject(rs.getString("subject"));
 				boardVO.setContent(rs.getString("content"));
-				boardVO.setFilename(rs.getString("filename"));
 				boardVO.setReadcount(rs.getInt("readcount"));
 				boardVO.setIp(rs.getString("ip"));
 				boardVO.setRegDate(rs.getTimestamp("reg_date"));
-				boardVO.setRe_ref(rs.getInt("re_ref"));
-				boardVO.setRe_lev(rs.getInt("re_lev"));
-				boardVO.setRe_seq(rs.getInt("re_seq"));
+				boardVO.setReRef(rs.getInt("re_ref"));
+				boardVO.setReLev(rs.getInt("re_lev"));
+				boardVO.setReSeq(rs.getInt("re_seq"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -504,6 +502,84 @@ public class BoardDao {
 			DBManager.close(con, pstmt);
 		}
 	} // deleteBoard method
+	
+/*
+num    subject              reRef     reLev   [reSeq]
+======================================================
+ 6     주글3                  6         0        0
+ 4     주글2                  4         0        0
+ 5      ㄴ답글2               4         1        1
+ 1     주글1                  1         0        0
+[7]     ㄴ답글2               1         1        1
+ 2      ㄴ답글1               1         1        1+1=2
+ 3         ㄴ답글1_1          1         2        2+1=3
+ 
+*/
+	// 답글쓰기 메소드 (update 이후 insert)
+	// 트랜잭션 처리가 요구됨(안전하게 처리하려는 목적)
+	public void reInsertBoard(BoardVO boardVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		
+		try {
+			con = DBManager.getConnection();
+			con.setAutoCommit(false); // 기본값은 true
+			
+			// 같은 글그룹에서의 답글순서(re_seq) 재배치
+			//   조건  re_ref같은그룹   re_seq 큰값은  re_seq+1
+			sql  = "UPDATE board ";
+			sql += "SET re_seq = re_seq + 1 ";					
+			sql += "WHERE re_ref = ? ";
+			sql += "AND re_seq > ? ";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardVO.getReRef());
+			pstmt.setInt(2, boardVO.getReSeq());
+			// 실행
+			pstmt.executeUpdate(); // update문 실행
+			
+			
+			// 기존 update문 가진 pstmt 닫기
+			pstmt.close();
+			
+			
+			// 답글 insert   re_ref그대로  re_lev+1  re_seq+1
+			sql  = "INSERT INTO board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ";
+			sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardVO.getNum());
+			pstmt.setString(2, boardVO.getUsername());
+			pstmt.setString(3, boardVO.getPasswd());
+			pstmt.setString(4, boardVO.getSubject());
+			pstmt.setString(5, boardVO.getContent());
+			pstmt.setInt(6, boardVO.getReadcount()); // 조회수
+			pstmt.setString(7, boardVO.getIp());
+			pstmt.setTimestamp(8, boardVO.getRegDate());
+			pstmt.setInt(9, boardVO.getReRef()); // 그대로
+			pstmt.setInt(10, boardVO.getReLev() + 1); // re_lev+1
+			pstmt.setInt(11, boardVO.getReSeq() + 1); // re_seq+1
+			// 실행
+			pstmt.executeUpdate(); // insert문 실행
+			
+			// commit 실행
+			con.commit();
+			
+			// 기본설정인 auto commit으로 설정 되돌리기
+			con.setAutoCommit(true);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				con.rollback(); // 실행중 예외발생 시 롤백처리
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			DBManager.close(con, pstmt);
+		}
+	} // reInsertBoard method
 	
 	
 	
