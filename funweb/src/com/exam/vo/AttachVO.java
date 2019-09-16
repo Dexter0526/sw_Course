@@ -4,7 +4,7 @@ public class AttachVO {
 	private String uuid;
 	private String uploadpath;
 	private String filename;
-	private char filetype; // 'I'는 Image파일타입(jpg,gif,png)
+	private String filetype; // "I"는 Image파일타입(jpg,gif,png)
 	private int bno;
 	
 	public String getUuid() {
@@ -25,10 +25,10 @@ public class AttachVO {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	public char getFiletype() {
+	public String getFiletype() {
 		return filetype;
 	}
-	public void setFiletype(char filetype) {
+	public void setFiletype(String filetype) {
 		this.filetype = filetype;
 	}
 	public int getBno() {

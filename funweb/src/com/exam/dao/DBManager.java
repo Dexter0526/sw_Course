@@ -15,7 +15,7 @@ public class DBManager {
 		Connection con = null;
 		/*
 		// DB접속정보
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		String user = "scott";
 		String password = "tiger";
 

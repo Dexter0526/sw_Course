@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="com.exam.vo.AttachVO"%>
 <%@page import="com.exam.dao.AttachDao"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -46,7 +47,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초")
 AttachDao attachDao = AttachDao.getInstance();
 
 // 글번호에 해당하는 첨부파일정보 가져오기
-AttachVO attachVO = attachDao.getAttach(num);
+List<AttachVO> attachList = attachDao.getAttaches(num);
 %>
 <body>
 <div id="wrap">
@@ -85,21 +86,21 @@ AttachVO attachVO = attachDao.getAttach(num);
 		<th class="twrite">파일</th>
 		<td class="left" colspan="3">
 			<%
-			if (attachVO != null) {
+			for (AttachVO attachVO : attachList) {
 				if (attachVO.getFiletype().equals("I")) { // 이미지 타입
 					%>
 					<a href="../upload/<%=attachVO.getFilename() %>">
 						<img src="../upload/<%=attachVO.getFilename() %>" width="50" height="50">
-					</a>
+					</a><br>
 					<%
 				} else {
 					%>
-					<a href="../upload/<%=attachVO.getFilename() %>">
+					<a href="../upload/<%=attachVO.getFilename() %>" download>
 						<%=attachVO.getFilename() %>
-					</a>
+					</a><br>
 					<%
 				}
-			}
+			} // for
 			%>
 		</td>
 	</tr>
@@ -111,7 +112,7 @@ AttachVO attachVO = attachDao.getAttach(num);
 
 
 <div id="table_search">
-	<input type="button" value="글수정" class="btn" onclick="location.href='update.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
+	<input type="button" value="글수정" class="btn" onclick="location.href='fupdate.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';">
 	<input type="button" value="글삭제" class="btn" onclick="checkDelete();">
 	<input type="button" value="답글쓰기" class="btn" onclick="location.href='reWrite.jsp?reRef=<%=boardVO.getReRef() %>&reLev=<%=boardVO.getReLev() %>&reSeq=<%=boardVO.getReSeq() %>';">
 	<input type="button" value="목록보기" class="btn" onclick="location.href='fnotice.jsp?pageNum=<%=pageNum %>';">
@@ -132,7 +133,7 @@ AttachVO attachVO = attachDao.getAttach(num);
 		var result = confirm('<%=boardVO.getNum() %>번 글을 정말로 삭제하시겠습니까?');
 		
 		if (result == true) {
-			location.href = 'delete.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';
+			location.href = 'fdelete.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';
 		}
 	}
 </script>
