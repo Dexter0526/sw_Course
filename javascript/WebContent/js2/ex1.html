@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="a.jsp" method="post" name="frm">
+		<input type="text" name="id" value="aaa">
+		<br>
+		<button type="submit">전송</button>
+		<button type="reset">초기화</button>
+		<br>
+		<button type="button" onclick="fun1()">폼정보확인</button>
+		<button type="button" onclick="fun2()">폼정보변경</button>
+	</form>
+	
+	<script>
+		// window - document - forms
+		// document.forms[0].필드  action  method  name
+		// document.forms[0].메소드()   submit()   reset()
+		
+		// document.frm.필드
+		// document.frm.메소드()
+		
+		function fun1() {
+			alert(document.forms[0].action);
+			alert(document.frm.method);
+		}
+		function fun2() {
+			// action => b.jsp 변경
+			document.forms[0].action = 'b.jsp';
+			// method => get 변경
+			document.frm.method = 'get';
+			// submit() 메소드 호출
+			document.frm.submit();
+		}
+	</script>
+</body>
+</html>
+
+
+
+
+
+

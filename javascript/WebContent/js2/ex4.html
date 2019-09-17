@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="a.jsp" method="post" name="frm">
+		학년:
+		<select name="grade"><!-- multiple="multiple" size="2" -->
+			<option value="">학년을 선택하세요</option>
+			<option value="1">1학년</option>
+			<option value="2">2학년</option>
+			<option value="3">3학년</option>
+		</select>
+		<button type="button" onclick="checkAndSubmit()">전송</button>
+		<br>
+		<button type="button" onclick="fun1()">정보확인1</button>
+		<button type="button" onclick="fun2()">정보확인2</button>
+	</form>
+	
+	<script>
+		// window - document - 폼이름 - select이름
+		
+		// frm.grade.필드
+		//    length  name  type  options[0]   seletedIndex(몇번째 선택->인덱스번호로 확인)
+		
+		// frm.grade.options[0].필드
+		//    selected(선택 true,false)  text  value
+		// frm.grade.options[0].메소드
+		//    focus()   blur()
+		
+		function fun1() {
+			alert('옵션갯수 : ' + frm.grade.length);
+			alert('이름 : ' + frm.grade.name);
+			alert('타입 : ' + frm.grade.type);
+			alert('선택된 번호 : ' + frm.grade.selectedIndex); // 단일선택일때 사용. 다중선택일때는 사용불가.
+		}
+		function fun2() {
+			alert('첫번째 옵션text : ' + frm.grade.options[1].text);
+			alert('첫번째 옵션value : ' + frm.grade.options[1].value);
+			alert('첫번째 옵션선택여부 : ' + frm.grade.options[1].selected);
+		}
+		function checkAndSubmit() {
+			// select의 첫번째 옵션이 선택되면 "학년을 선택하세요" 포커스 return
+			if (frm.grade.selectedIndex == 0) {
+				alert('학년을 선택하세요');
+				frm.grade.focus();
+				return;
+			}
+			// 전송
+			frm.submit();
+		}
+	</script>
+</body>
+</html>
+
+
+

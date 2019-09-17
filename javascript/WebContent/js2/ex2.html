@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="a.jsp" method="post" name="frm">
+		아이디: <input type="text" name="id" /><br>
+		패스워드: <input type="password" name="passwd" /><br>
+		주민번호: <input type="text" name="jumin1" maxlength="6" onkeyup="ju1()"/> -
+		          <input type="text" name="jumin2" maxlength="7" onkeyup="ju2()"/><br>
+		자기소개: <textarea rows="3" cols="8" name="ta"></textarea><br>
+		<button type="button" onclick="fun()">전송</button>
+	</form>
+
+	<script>
+	// doument.frm.텍스트상자이름.필드  type  name  value
+	// doument.frm.텍스트상자이름.메소드()  focus()  blur()  select()
+	
+	function ju1() {
+		// jumin1의 value값 길이가 6자면 포커스를 jumin2로 이동
+		if (frm.jumin1.value.length >= 6) {
+			frm.jumin2.focus();
+		}
+	}
+	function ju2() {
+		// jumin2의 value값 길이가 7자면 포커스를 jumin2로 이동
+		if (frm.jumin2.value.length >= 7) {
+			frm.ta.focus();
+		}
+	}
+	function fun() {
+		// 아이디 입력하지 않으면 "아이디 입력하세요" 포커스
+		if (frm.id.value == '') {
+			alert('아이디 입력하세요');
+			frm.id.focus();
+			return;
+		}
+		// 아이디는 4~10글자 글자수 제한. "아이디는 4~10 사이 입력하세요" 포커스주기
+		
+		// 패스워드 입력하지 않으면 "패스워드 입력하세요" 포커스
+		
+		// 전송
+		frm.submit();
+	}
+	</script>
+</body>
+</html>
+
+
+
