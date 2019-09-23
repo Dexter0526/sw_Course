@@ -27,7 +27,8 @@
 		// h1요소를 가진 리스트를 리턴함. 
 		// each동작으로 요소 하나하나를 처리하는 함수를 전달.
 		$('h1').each(function (index, item) {
-			$(this).addClass('high_' + index);
+			$(item).addClass('high_' + index);
+			//$(this).addClass('high_' + index);
 		});
 	});
 </script>

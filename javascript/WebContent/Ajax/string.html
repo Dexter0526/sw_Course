@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<button type="button">버튼</button>
+	<div></div>
+	
+<script src="../scripts/jquery-3.4.1.min.js"></script>
+<script>
+	// Ajax(비동기 XML 자바스크립트 통신)
+	// 버튼을 클릭하면 Ajax통신으로 string.jsp를 요청해서
+	// 응답내용을 div영역 안에 삽입하기
+	
+	// 동기방식(권장하지 않음)
+	/*
+	$('button').click(function () {
+		var result = '';
+		$.ajax({
+			url: 'string.jsp',
+			success: function (data) {
+				result = data;
+			},
+			async: false
+		});
+		$('div').append(result);
+	});
+	*/
+
+	// 비동기방식 통신
+	/*
+	$('button').click(function () {
+		$.ajax({
+			url: 'string.jsp',
+			success: function (data) {
+				alert('ajax 응답받음');
+				$('div').append(data);
+			}
+		});
+		alert('ajax 호출함');
+	});
+	*/
+	
+	// 순수 자바스크립트 방식 ajax 통신
+	document.querySelector('button').onclick = function () {
+		var req = new XMLHttpRequest();
+		req.onreadystatechange = function () {
+			if (req.readyState == 4 && req.status == 200) {
+				document.querySelector('div').innerHTML += req.responseText
+			}
+		};
+		req.open('GET', 'string.jsp', true);
+		req.send(); // 전송요청 발생
+	};
+	
+	
+</script>
+</body>
+</html>
+
+
+
