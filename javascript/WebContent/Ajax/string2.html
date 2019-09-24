@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div></div>
+	
+	<form action="" name="frm" id="frm">
+		이름: <input type="text" name="name"><br>
+		나이: <input type="number" name="age"><br>	
+	</form>
+	<button type="button">버튼</button>
+	
+<script src="../scripts/jquery-3.4.1.min.js"></script>
+<script>
+	$('button').click(function () {
+		var name = frm.name.value;
+		var age = frm.age.value;
+		console.log('name: ' + name + ', age:' + age);
+		
+		var str = $(frm).serialize();
+		console.log(typeof str);
+		console.log(str);
+		
+		// 서버로 파라미터 전송
+		$.ajax({
+			url: 'string2.jsp',
+			data: str,  // {name: name, age: age},
+			//method: 'GET',
+			success: function (data) {
+				console.log(typeof data);
+				//$('div').append(data); // 기존내용 뒤에추가
+				$('div').html(data); // 기존내용 대체
+			}
+		});
+	});
+
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<button type="button">버튼</button>
+	<div></div>
+
+<script src="../scripts/jquery-3.4.1.min.js"></script>
+<script>
+$('button').click(function () {
+	//$('div').html('');
+	
+	$.ajax({
+		url: 'xml.jsp',
+		success: function (data) {
+			console.log(typeof data);
+			console.log(data);
+			
+			var str = '';
+			$(data).find('person').each(function (index, item) {
+				//var name = $(this).find('name').text();
+				var name = $(item).find('name').text();
+				var gender = $(item).find('gender').text();
+				var part = $(item).find('part').text();
+				
+				//$('div').append('<h1>'+name+' : '+gender+' : '+part+'</h1>');
+				
+				str += '<h1>'+name+' : '+gender+' : '+part+'</h1>';
+			});
+			
+			$('div').html(str);
+		}
+	});
+	
+});
+</script>
+</body>
+</html>
+
+
