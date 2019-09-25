@@ -27,7 +27,89 @@
 
  </script>
  <![endif]--> 
+</head>
 
+<body>
+<div id="wrap">
+	<!-- 헤더 영역 -->
+	<jsp:include page="../include/header.jsp" />
+
+  <div class="clear"></div>
+  <div id="sub_img_member"></div>
+  <div class="clear"></div>
+
+	<!-- nav 영역 -->
+	<jsp:include page="../include/nav_member.jsp" />
+
+<article>
+    
+<h1>Join Us</h1>
+<form name="frm" id="join" action="joinProcess.jsp" method="post" onsubmit="return check();">    
+<fieldset>
+	<legend>Basic Info</legend>
+	
+	<label>User ID</label> <input name="id" type="text" class="id" id="id"> 
+	<input type="button" value="ID 중복확인" class="dup" onclick="winOpen();">
+	<span id="id-message"></span>
+	<br>
+	
+	<label>Password</label> <input name="passwd" type="password" class="pass"><br>
+	<label>Retype Password</label> <input name="passwd2" type="password" class="pass"><br>
+	<label>Name</label> <input name="name" type="text" class="nick"><br>
+	<label>E-Mail</label> <input name="email" type="email" class="email" ><br>
+	<label>Retype E-mail</label> <input name="email2" type="email" class="email"><br>
+</fieldset>
+
+<fieldset>
+	<legend>Optional</legend>
+	<label>Address</label> <input name="address" type="text" class="address"><br>
+	<label>Phone Number</label> <input name="tel" type="tel" class="phone"><br>
+	<label>Mobile Phone Number</label> <input name="mtel" type="tel" class="mobile"><br>
+</fieldset>
+
+<div class="clear"></div>
+<div id="buttons">
+<input type="submit" value="회원가입" class="submit">
+<input name="" type="button" value="Cancel" class="cancel">
+</div>
+
+</form> 
+    
+</article>    
+    <div class="clear"></div>
+    
+    <!-- 푸터 영역 -->
+	<jsp:include page="../include/footer.jsp" />
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$('#id').keyup(function () {
+	var id = $(this).val();
+	console.log(id);
+	
+	$.ajax({
+		url: 'joinIdDupCheckJson.jsp',
+		data: {id: id},
+		success: function (data) {
+			console.log(typeof data);
+			console.log(data);
+			
+			idDupMessage(data);
+		}
+	});
+});
+
+function idDupMessage(isIdDup) {
+	if (isIdDup) { // 중복 true
+		$('span#id-message').html('중복된 아이디입니다.').css('color', 'red');
+	} else { // 중복아님 false
+		$('span#id-message').html('사용가능한 아이디입니다.').css('color', 'green');
+	}
+}
+</script>
 <script>
 // 사용자 입력값 검증
 function check() {
@@ -83,58 +165,7 @@ function winOpen() {
 	var childWindow = window.open('joinIdDupCheck.jsp?userid=' + inputId, '', 'width=400,height=300');
 	//childWindow.document.write('입력한 아이디: ' + inputId + '<br>');
 }
-
 </script>
-</head>
-
-<body>
-<div id="wrap">
-	<!-- 헤더 영역 -->
-	<jsp:include page="../include/header.jsp" />
-
-  <div class="clear"></div>
-  <div id="sub_img_member"></div>
-  <div class="clear"></div>
-
-	<!-- nav 영역 -->
-	<jsp:include page="../include/nav_member.jsp" />
-
-<article>
-    
-<h1>Join Us</h1>
-<form name="frm" id="join" action="joinProcess.jsp" method="post" onsubmit="return check();">    
-<fieldset>
-	<legend>Basic Info</legend>
-	<label>User ID</label> <input name="id" type="text" class="id" id="id"> <input type="button" value="ID 중복확인" class="dup" onclick="winOpen();"><br>
-	<label>Password</label> <input name="passwd" type="password" class="pass"><br>
-	<label>Retype Password</label> <input name="passwd2" type="password" class="pass"><br>
-	<label>Name</label> <input name="name" type="text" class="nick"><br>
-	<label>E-Mail</label> <input name="email" type="email" class="email" ><br>
-	<label>Retype E-mail</label> <input name="email2" type="email" class="email"><br>
-</fieldset>
-
-<fieldset>
-	<legend>Optional</legend>
-	<label>Address</label> <input name="address" type="text" class="address"><br>
-	<label>Phone Number</label> <input name="tel" type="tel" class="phone"><br>
-	<label>Mobile Phone Number</label> <input name="mtel" type="tel" class="mobile"><br>
-</fieldset>
-
-<div class="clear"></div>
-<div id="buttons">
-<input type="submit" value="회원가입" class="submit">
-<input name="" type="button" value="Cancel" class="cancel">
-</div>
-
-</form> 
-    
-</article>    
-    <div class="clear"></div>
-    
-    <!-- 푸터 영역 -->
-	<jsp:include page="../include/footer.jsp" />
-</div>
-
 </body>
 </html>   
 
