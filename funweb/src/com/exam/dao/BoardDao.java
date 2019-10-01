@@ -31,7 +31,7 @@ public class BoardDao {
 		try {
 			con = DBManager.getConnection();
 			// num 컬럼값중에 최대값 구하기. 레코드 없으면 null
-			String sql = "SELECT MAX(num) FROM board";
+			String sql = "SELECT MAX(num) FROM jspdb.board";
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(sql);
 			// rs 레코드값 있으면 num = 최대값 + 1
@@ -59,8 +59,8 @@ public class BoardDao {
 		try {
 			con = DBManager.getConnection();
 			
-			sb.append("INSERT INTO board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ");
-			sb.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			sb.append("INSERT INTO jspdb.board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ");
+			sb.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, boardVO.getNum());
 			pstmt.setString(2, boardVO.getUsername());
@@ -98,7 +98,7 @@ public class BoardDao {
 		sb.append("    (SELECT ROWNUM AS rnum, a.* ");
 		sb.append("    FROM ");
 		sb.append("        (SELECT * ");
-		sb.append("        FROM board ");
+		sb.append("        FROM jspdb.board ");
 		sb.append("        ORDER BY num DESC) a ");
 		sb.append("    WHERE ROWNUM <= ?) aa ");
 		sb.append("WHERE rnum >= ? ");
@@ -151,7 +151,7 @@ public class BoardDao {
 		sb.append("    (SELECT ROWNUM AS rnum, a.* ");
 		sb.append("    FROM ");
 		sb.append("        (SELECT * ");
-		sb.append("        FROM board ");
+		sb.append("        FROM jspdb.board ");
 		sb.append("        WHERE subject LIKE ? ");
 		sb.append("        ORDER BY num DESC) a ");
 		sb.append("    WHERE ROWNUM <= ?) aa ");
@@ -201,12 +201,15 @@ public class BoardDao {
 		ResultSet rs = null;
 		
 		StringBuilder sb = new StringBuilder();
+		
+		/*
+		 * 오라클용 글목록 가져오기 SQL문. ROWNUM 시작행 1부터
 		sb.append("SELECT aa.* ");
 		sb.append("FROM ");
 		sb.append("    (SELECT ROWNUM AS rnum, a.* ");
 		sb.append("    FROM ");
 		sb.append("        (SELECT * ");
-		sb.append("        FROM board ");
+		sb.append("        FROM jspdb.board ");
 		
 		// 검색어 search가 있을때는 검색조건절 where를 추가함
 		if (!(search == null || search.equals(""))) {
@@ -216,6 +219,21 @@ public class BoardDao {
 		sb.append("        ORDER BY re_ref DESC, re_seq ASC) a ");
 		sb.append("    WHERE ROWNUM <= ?) aa ");
 		sb.append("WHERE rnum >= ? ");
+		*/
+		
+		
+		
+		/*
+		 * MySQL용 글목록 가져오기 SQL문. 시작행번호 0부터 시작
+		 */
+		sb.append("SELECT * ");
+		sb.append("FROM jspdb.board ");
+		// 검색어 search가 있을때는 검색조건절 where를 추가함
+		if (!(search == null || search.equals(""))) {
+			sb.append("WHERE subject LIKE ? ");
+		}
+		sb.append("ORDER BY re_ref DESC, re_seq ASC ");
+		sb.append("LIMIT ? OFFSET ? ");
 		
 		try {
 			con = DBManager.getConnection();
@@ -224,12 +242,17 @@ public class BoardDao {
 			if (!(search == null || search.equals(""))) {
 				// 검색어가 있을때
 				pstmt.setString(1, "%" + search + "%");
-				pstmt.setInt(2, endRow);
-				pstmt.setInt(3, startRow);
+				
+				//pstmt.setInt(2, endRow);   // 오라클 기준
+				//pstmt.setInt(3, startRow); // 오라클 기준
+				pstmt.setInt(2, pageSize);   // MySQL 기준
+				pstmt.setInt(3, startRow-1); // MySQL 기준
 			} else {
 				// 검색어가 없을때
-				pstmt.setInt(1, endRow);
-				pstmt.setInt(2, startRow);
+				//pstmt.setInt(1, endRow);   // 오라클 기준
+				//pstmt.setInt(2, startRow); // 오라클 기준
+				pstmt.setInt(1, pageSize);   // MySQL 기준
+				pstmt.setInt(2, startRow-1); // MySQL 기준
 			}
 			
 			// 실행
@@ -260,7 +283,7 @@ public class BoardDao {
 	
 
 /*
-	// 게시판(board) 테이블 레코드 개수 가져오기 메소드
+	// 게시판(jspdb.board) 테이블 레코드 개수 가져오기 메소드
 	public int getBoardCount() {
 		int count = 0;
 		Connection con = null;
@@ -269,7 +292,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "SELECT COUNT(*) FROM board";
+			String sql = "SELECT COUNT(*) FROM jspdb.board";
 			stmt = con.createStatement();
 			// 실행
 			rs = stmt.executeQuery(sql);
@@ -295,7 +318,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "SELECT COUNT(*) FROM board ";
+			String sql = "SELECT COUNT(*) FROM jspdb.board ";
 			sql += "WHERE subject LIKE ? ";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "%"+search+"%");
@@ -324,7 +347,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "SELECT COUNT(*) FROM board ";
+			String sql = "SELECT COUNT(*) FROM jspdb.board ";
 			
 			// 동적(Dynamic) SQL
 			if (!(search == null || search.equals(""))) {
@@ -362,7 +385,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			sb.append("UPDATE board ");
+			sb.append("UPDATE jspdb.board ");
 			sb.append("SET readcount = readcount + 1 ");
 			sb.append("WHERE num = ?");
 			
@@ -389,7 +412,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "SELECT * FROM board WHERE num = ?";
+			String sql = "SELECT * FROM jspdb.board WHERE num = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			// 실행
@@ -429,7 +452,7 @@ public class BoardDao {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT COUNT(*) ");
-		sb.append("FROM board ");
+		sb.append("FROM jspdb.board ");
 		sb.append("WHERE num = ? ");
 		sb.append("AND passwd = ? ");
 		
@@ -464,7 +487,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		
 		String sql = "";
-		sql  = "UPDATE board ";
+		sql  = "UPDATE jspdb.board ";
 		sql += "SET subject = ?, content = ? ";
 		sql += "WHERE num = ? ";
 		
@@ -491,7 +514,7 @@ public class BoardDao {
 		
 		try {
 			con = DBManager.getConnection();
-			String sql = "DELETE FROM board WHERE num = ?";
+			String sql = "DELETE FROM jspdb.board WHERE num = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			// 실행
@@ -528,7 +551,7 @@ num    subject              reRef     reLev   [reSeq]
 			
 			// 같은 글그룹에서의 답글순서(re_seq) 재배치
 			//   조건  re_ref같은그룹   re_seq 큰값은  re_seq+1
-			sql  = "UPDATE board ";
+			sql  = "UPDATE jspdb.board ";
 			sql += "SET re_seq = re_seq + 1 ";					
 			sql += "WHERE re_ref = ? ";
 			sql += "AND re_seq > ? ";
@@ -545,7 +568,7 @@ num    subject              reRef     reLev   [reSeq]
 			
 			
 			// 답글 insert   re_ref그대로  re_lev+1  re_seq+1
-			sql  = "INSERT INTO board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ";
+			sql  = "INSERT INTO jspdb.board (num, username, passwd, subject, content, readcount, ip, reg_date, re_ref, re_lev, re_seq) ";
 			sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = con.prepareStatement(sql);

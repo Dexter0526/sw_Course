@@ -28,7 +28,7 @@ public class DBManager {
 		// DBCP 적용한 코드
 		// DataSource는 커넥션을 미리 일정갯수 보유하고 있음
 		Context context = new InitialContext();
-		DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/oracledb");
+		DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/mysqldb");
 		con = ds.getConnection(); // 커넥션 한개 빌려오기
 		return con;
 	}

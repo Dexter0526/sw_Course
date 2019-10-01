@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-	<Resource 
-	name = "jdbc/oracledb"
-	auth = "Container"
-	type = "javax.sql.DataSource"
-	driverClassName = "oracle.jdbc.OracleDriver"
-	url = "jdbc:oracle:thin:@localhost:1521:orcl"
-	username = "scott"
-	password = "tiger"
-	/>
+<!-- 	<RESOURCE  -->
+<!-- 	NAME = "JDBC/ORACLEDB" -->
+<!-- 	AUTH = "CONTAINER" -->
+<!-- 	TYPE = "JAVAX.SQL.DATASOURCE" -->
+<!-- 	DRIVERCLASSNAME = "ORACLE.JDBC.ORACLEDRIVER" -->
+<!-- 	URL = "JDBC:ORACLE:THIN:@LOCALHOST:1521:ORCL" -->
+<!-- 	USERNAME = "SCOTT" -->
+<!-- 	PASSWORD = "TIGER" -->
+<!-- 	/> -->
+	
+	<Resource
+	name="jdbc/mysqldb"
+	type="javax.sql.DataSource"
+	auth="Container"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://localhost:3306/jspdb?useUnicode=true&amp;characterEncoding=utf8&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=Asia/Seoul"
+	username="jspid"
+	password="jsppass"
+	 />
 	
 </Context>

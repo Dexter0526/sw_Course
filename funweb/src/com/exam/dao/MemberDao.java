@@ -29,7 +29,7 @@ public class MemberDao {
 		
 		try {
 			con = DBManager.getConnection();
-			sql = "SELECT COUNT(*) AS cnt FROM member WHERE id = ?";
+			sql = "SELECT COUNT(*) AS cnt FROM jspdb.member WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -58,7 +58,7 @@ public class MemberDao {
 		try {
 			con = DBManager.getConnection();
 			// 3단계: sql문 준비
-			String sql = "INSERT INTO member (id,passwd,name,email,address,tel,mtel,reg_date) ";
+			String sql = "INSERT INTO jspdb.member (id,passwd,name,email,address,tel,mtel,reg_date) ";
 			sql += " VALUES (?,?,?,?,?,?,?,?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
@@ -89,7 +89,7 @@ public class MemberDao {
 		String sql = "";
 		try {
 			con = DBManager.getConnection();
-			sql = "SELECT * FROM member WHERE id = ?";
+			sql = "SELECT * FROM jspdb.member WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			//4단계: sql문 실행
@@ -124,7 +124,7 @@ public class MemberDao {
 			con = DBManager.getConnection();
 			
 			//3단계: sql문 준비
-			String sql = "SELECT passwd FROM member WHERE id = ?";
+			String sql = "SELECT passwd FROM jspdb.member WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			//4단계: sql문 실행
@@ -163,7 +163,7 @@ public class MemberDao {
 			//2단계: DB연결
 			con = DBManager.getConnection();
 			//3단계: sql문 준비
-			sql = "SELECT * FROM member ORDER BY id ASC";
+			sql = "SELECT * FROM jspdb.member ORDER BY id ASC";
 			stmt = con.createStatement();
 			//4단계: sql문 실행 -> rs 생성
 			rs = stmt.executeQuery(sql);
@@ -206,7 +206,7 @@ public class MemberDao {
 			//2단계: DB연결
 			con = DBManager.getConnection();
 			//3단계: sql문 준비
-			sql = "UPDATE member SET name=?, age=?, gender=?, email=? WHERE id=?";
+			sql = "UPDATE jspdb.member SET name=?, age=?, gender=?, email=? WHERE id=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, memberVO.getName());
 			
@@ -232,7 +232,7 @@ public class MemberDao {
 		String sql = "";
 		try {
 			con = DBManager.getConnection();
-			sql = "DELETE FROM member WHERE id = ?";
+			sql = "DELETE FROM jspdb.member WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rowCount = pstmt.executeUpdate();

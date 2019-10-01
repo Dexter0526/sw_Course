@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#dragtarget {
+	width: 100px;
+	height: 100px;
+	background-color: tomato;
+}
+
+#dragInner {
+	width: inherit;
+	height: 30px;
+	background-color: slateblue;
+	color: white;
+}
+
+#dropzone {
+	width: 500px;
+	height: 500px;
+	background-color: yellowgreen;
+	
+	position: absolute;
+	left: 300px;
+	top: 300px;
+}
+</style>
+</head>
+<body>
+
+<div id="dragtarget">
+	<div id="dragInner" draggable="true" ondragstart="handleDragStart(event);">
+		Drag Target
+	</div>
+</div>
+
+
+<div id="dropzone" ondragover="event.preventDefault();" ondrop="handleDrop(event);"></div>
+
+<script>
+function handleDragStart(event) {
+	console.log('DragStart');
+	var parentNode = event.target.parentElement;
+	event.dataTransfer.setDragImage(parentNode, 20, 20);
+	
+	event.dataTransfer.setData('id', parentNode.id); // ('id', 'dragtarget')
+}
+
+function handleDrop(event) {
+	console.log('Drop');
+	event.preventDefault(); // drop 을 허용하기 위해서 사용. 기본적으로는 drop허용안하기 때문에.
+	
+	var targetId = event.dataTransfer.getData('id');
+	
+	var divElem = document.getElementById(targetId);
+	event.target.appnedChild(divElem);
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
