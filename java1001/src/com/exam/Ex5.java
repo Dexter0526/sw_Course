@@ -14,13 +14,13 @@ public class Ex5 {
 		// 기본생성자로 객체생성해서
 		// 매개변수에 전달
 		
-		// 추상메소드를 한개만 가진 인터페이스는
-		// 람다표현이 가능
+		// ※ 추상메소드를 한개만 가진 인터페이스는
+		//   람다표현이 가능
 		
 		Thread thread1 = new Thread(() -> {
-				while(true)
-					System.out.println("go");
-			});
+			while(true)
+				System.out.println("go");
+		});
 		
 		
 		Thread thread2 = new Thread(() -> {
