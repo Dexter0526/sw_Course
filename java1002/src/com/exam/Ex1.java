@@ -1,5 +1,9 @@
 package com.exam;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Ex1 {
 
 	public static void main(String[] args) {
@@ -13,11 +17,27 @@ public class Ex1 {
 		//  Reader - InputStreamReader, BufferedReader, FileReader 
 		//  Writer - OutputStreamWriter, BufferedWriter, FileWriter
 		
-		// FileReader
+		// FileReader로 텍스트 파일 읽기
+		FileReader reader = null;
 		
+		try {
+			reader = new FileReader("C:/Windows/system.ini");
+			
+			int c;
+			while ((c = reader.read()) != -1) {
+				System.out.print((char) c);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close(); // 입출력 객체 닫기
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
-		
-
 	}// main method
 
 }
