@@ -1,3 +1,4 @@
+<%@page import="com.google.gson.Gson"%>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.json.simple.JSONArray"%>
 <%@page import="com.exam.vo.MemberVO"%>
@@ -11,19 +12,35 @@ MemberDao memberDao = MemberDao.getInstance();
 List<MemberVO> memberList = memberDao.getMembers();
 // json-simple 라이브러리 빌드패스에 추가
 // List를 JSONArray 타입으로 변환
-// VO를 JSONObject 타입으로 변환
+//   VO를 JSONObject 타입으로 변환
 
-//JSONArray 객체 준비
-JSONArray jsonArray = new JSONArray();
-for(MemberVO memberVO : memberList){
-	JSONObject jsonObject = new JSONObject();	//{}
+// JSONArray 객체 준비
+/*
+JSONArray jsonArray = new JSONArray(); // []
+
+for (MemberVO memberVO : memberList) {
+	JSONObject jsonObject = new JSONObject(); // {}
 	
 	jsonObject.put("id", memberVO.getId());
 	jsonObject.put("passwd", memberVO.getPasswd());
 	jsonObject.put("name", memberVO.getName());
 	
 	jsonArray.add(jsonObject);
-}
-
+} // for
+*/
+//out.println(jsonArray.toString());
 %>
-<%=jsonArray%>
+<%//=jsonArray %>
+
+
+<% 
+	Gson gson = new Gson();
+	String str = gson.toJson(memberList);
+	out.println(str); // 브라우저로 출력
+%>
+
+
+
+
+
+
