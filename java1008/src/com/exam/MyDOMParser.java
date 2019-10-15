@@ -137,7 +137,12 @@ public class MyDOMParser {
 	public static void main(String[] args) {
 		MyDOMParser domParser = new MyDOMParser();
 		
+		List<CompanyVO> companyList = domParser.parseMovieCompany();
 		List<PersonVO> personList = domParser.parsePerson();
+		
+		for(CompanyVO companyVO : companyList) {
+			System.out.println(companyVO);
+		}System.out.println();
 		for(PersonVO personVO : personList) {
 			System.out.println(personVO);
 		}
