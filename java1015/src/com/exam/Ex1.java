@@ -5,6 +5,9 @@ import org.apache.commons.mail.SimpleEmail;
 public class Ex1 {
 
 	public static void main(String[] args) {
+		
+		long beginTime = System.currentTimeMillis();
+		
 		// 메일 전송기능 라이브러리 준비
 		
 		// SMTP(Send Mail Transfer Protocol) 프로토콜
@@ -70,8 +73,11 @@ public class Ex1 {
 			e.printStackTrace();
 		}
 		
-		System.out.println("result : " + result);
+		long endTime = System.currentTimeMillis();
+		long execTime = endTime - beginTime;
 		
+		System.out.println("result : " + result);
+		System.out.println("execTime : " + execTime);
 		
 	} // main method
 
