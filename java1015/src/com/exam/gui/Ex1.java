@@ -36,6 +36,7 @@ class MyActionListener implements ActionListener {
 }
 */
 
+// Swing GUI
 public class Ex1 extends JFrame {
 	
 	private JButton btn1 = new JButton("버튼1");

@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="application.SampleController">
+<AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
    <children>
       <TextField fx:id="tfNo" layoutX="118.0" layoutY="66.0" prefHeight="42.0" prefWidth="161.0">
          <font>
@@ -68,8 +67,10 @@
       </Button>
       <TableView fx:id="tableView" layoutX="314.0" layoutY="61.0" prefHeight="353.0" prefWidth="316.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="tcNo" prefWidth="31.0" style="-fx-alignment: center;" text="번호" />
+          <TableColumn fx:id="tcName" prefWidth="61.0" style="-fx-alignment: center;" text="이름" />
+            <TableColumn fx:id="tcEmail" prefWidth="90.0" style="-fx-alignment: center;" text="이메일" />
+            <TableColumn fx:id="tcTel" prefWidth="118.0" style="-fx-alignment: center;" text="폰번호" />
         </columns>
       </TableView>
    </children>
