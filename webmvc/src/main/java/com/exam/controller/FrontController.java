@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.exam.controller.member.MemberJoinAction;
 import com.exam.controller.member.MemberJoinFormAction;
+import com.exam.controller.member.MemberLoginFormAction;
 
 @WebServlet("*.do")
 public class FrontController extends HttpServlet {
@@ -19,11 +21,11 @@ public class FrontController extends HttpServlet {
 		//*프론트 컨트롤러 역할 및 수행단계
 		// 1) 요청정보(명령어) 추출
 		
-		// http://localhost:80/webmvc/MemberJoin.do
+		// http://localhost:80/webmvc/memberJoinForm.do
 		
 		String requestURI = request.getRequestURI();
 		System.out.println("요청URI주소: " + requestURI);
-		// 요청URI주소: /webmvc/MemberJoin.do
+		// 요청URI주소: /webmvc/memberJoinForm.do
 		
 		String contextPath = request.getContextPath();
 		System.out.println("contextPath: " + contextPath);
@@ -31,37 +33,34 @@ public class FrontController extends HttpServlet {
 		
 		String command = requestURI.substring(contextPath.length());
 		System.out.println("command: " + command);
-		// command: /MemberJoin.do
-		
+		// command: /memberJoinForm.do
 		
 		
 		// 2) 요청정보(명령어)에 대응하는 로직 실행
 		Action action = null;
 		ActionForward forward = null;
-		if (command.equals("/memberJoinForm.do")) {
-			//회원가입 폼화면 제공
-			action = new MemberJoinFormAction();
-			
-			try {
-				forward = action.execute(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (command.equals("/memberJoin.do")) {
-			//회원 로그인처리
-			// 40줄...
+		ActionFactory factory = ActionFactory.getInstance();
+		
+		action = factory.getAction(command);
+		try {
+			forward = action.execute(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-				
+		
 		// 3) 화면정보를 가진 뷰(JSP)를 선택해서 실행
 		// URL주소(sendRedirect 방식 이동. "*.do" 명령어로 재요청할때) 
 		// 또는 jsp파일명(dispatch 방식 이동)
 		
-		if(forward != null) {	// 이동정보가 있으면
-			if(forward.isRedirect()) {	//redirect 방식 이동
+		if (forward != null) { // 이동정보가 있으면
+			if (forward.isRedirect()) { // redirect 방식 이동
 				response.sendRedirect(forward.getPath());
-			}else {	// dispatch 방식 이동
-				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+			} else { // dispatch 방식 이동
+				String path = "WEB-INF/views/" + forward.getPath() + ".jsp";
+				
+				RequestDispatcher dispatcher
+					= request.getRequestDispatcher(path);
 				dispatcher.forward(request, response);
 			}
 		}

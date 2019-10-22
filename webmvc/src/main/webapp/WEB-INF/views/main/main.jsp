@@ -5,12 +5,12 @@
 <head>
 <meta charset="utf-8">
 <title>Welcome to Fun Web</title>
-<link href="../css/default.css" rel="stylesheet" type="text/css" media="all">
-<link href="../css/front.css" rel="stylesheet" type="text/css" media="all">
-<link href="../css/print.css" rel="stylesheet" type="text/css" media="print">
-<link href="../css/iphone.css" rel="stylesheet" type="text/css" media="screen">
-<script type="text/javascript" src="../script/jquery-1.6.1.min.js"></script>
-<script type="text/javascript" src="../script/s3Slider.js"></script>
+<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/front.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/print.css" rel="stylesheet" type="text/css" media="print">
+<link href="css/iphone.css" rel="stylesheet" type="text/css" media="screen">
+<script type="text/javascript" src="script/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="script/s3Slider.js"></script>
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js" type="text/javascript"></script>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/ie7-squish.js" type="text/javascript"></script>
@@ -27,7 +27,7 @@
 
 
 <!--[if IE 6]>
- <script src="../script/DD_belatedPNG.js"></script>
+ <script src="script/DD_belatedPNG.js"></script>
  <script>
    /* EXAMPLE */
    DD_belatedPNG.fix('#wrap');
@@ -58,19 +58,19 @@ $(document).ready(function() {
             <div id="s3slider">
                     <ul id="s3sliderContent">
                        <li class="s3sliderImage">
-                             <img src="../images/main_img.jpg" width="971" height="282">
+                             <img src="images/main_img.jpg" width="971" height="282">
                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam semper erat est. <br>
                                  Aliquam metus elit, blandit eu luctus vitae, dictum sit amet mauris. Integer ut facilisis eros. <br>
                                  Donec consectetur, velit id aliquam sagittis,</span>
                        </li>
                        <li class="s3sliderImage">
-                           <img src="../images/main_img1.jpg" width="971" height="282">
+                           <img src="images/main_img1.jpg" width="971" height="282">
                                  <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam semper erat est. <br>
                                  Aliquam metus elit, blandit eu luctus vitae, dictum sit amet mauris. Integer ut facilisis eros. <br>
                                  Donec consectetur, velit id aliquam sagittis,</span>
                        </li>
                        <li class="s3sliderImage">
-                           <img src="../images/main_img2.jpg" width="971" height="282">
+                           <img src="images/main_img2.jpg" width="971" height="282">
                                   <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam semper erat est. <br>
                                  Aliquam metus elit, blandit eu luctus vitae, dictum sit amet mauris. Integer ut facilisis eros. <br>
                                  Donec consectetur, velit id aliquam sagittis,</span>
