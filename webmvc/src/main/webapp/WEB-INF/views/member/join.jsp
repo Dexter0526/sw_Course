@@ -91,7 +91,7 @@ $('#id').keyup(function () {
 	console.log(id);
 	
 	$.ajax({
-		url: 'joinIdDupCheckJson.jsp',
+		url: 'joinIdDupCheckJson.do',
 		data: {id: id},
 		success: function (data) {
 			console.log(typeof data);
@@ -162,7 +162,7 @@ function winOpen() {
 	// open()에 의해 새로열린 창은 자식창
 	// 부모-자식 관계가 있음.
 	// 자식창의 데이터를 부모창으로 가져올수 있음.
-	var childWindow = window.open('joinIdDupCheck.jsp?userid=' + inputId, '', 'width=400,height=300');
+	var childWindow = window.open('joinIdDupCheck.do?userid=' + inputId, '', 'width=400,height=300');
 	//childWindow.document.write('입력한 아이디: ' + inputId + '<br>');
 }
 </script>
