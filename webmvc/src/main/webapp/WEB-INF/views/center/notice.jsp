@@ -1,21 +1,16 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="com.exam.vo.BoardVO"%>
-<%@page import="java.util.List"%>
-<%@page import="com.exam.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Welcome to Fun Web</title>
-<link href="../css/default.css" rel="stylesheet" type="text/css" media="all">
-<link href="../css/subpage.css" rel="stylesheet" type="text/css"  media="all">
-<link href="../css/print.css" rel="stylesheet" type="text/css"  media="print">
-<link href="../css/iphone.css" rel="stylesheet" type="text/css" media="screen">
+<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/subpage.css" rel="stylesheet" type="text/css"  media="all">
+<link href="css/print.css" rel="stylesheet" type="text/css"  media="print">
+<link href="css/iphone.css" rel="stylesheet" type="text/css" media="screen">
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js" type="text/javascript"></script>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/ie7-squish.js" type="text/javascript"></script>
@@ -24,7 +19,7 @@
 
 
 <!--[if IE 6]>
- <script src="../script/DD_belatedPNG.js"></script>
+ <script src="script/DD_belatedPNG.js"></script>
  <script>
    /* EXAMPLE */
    DD_belatedPNG.fix('#wrap');
@@ -64,13 +59,13 @@
     <c:when test="${pageInfoMap.count gt 0}"><%-- ${not empty boardList} --%>
       
       <c:forEach var="board" items="${boardList}">
-		  <tr onclick="location.href='content.jsp?num=${board.num}&pageNum=${pageNum}';">
+		  <tr onclick="location.href='content.do?num=${board.num}&pageNum=${pageNum}';">
 		  	<td>${board.num}</td>
 		  	<td class="left">
 		  		<c:if test="${board.reLev gt 0}"><%-- 답글일때 --%>
 		  			<c:set var="level" value="${board.reLev * 10}" />
-		  			<img src="../images/center/level.gif" width="${level}" height="13">
-		  			<img src="../images/center/icon_re.gif">
+		  			<img src="images/center/level.gif" width="${level}" height="13">
+		  			<img src="images/center/icon_re.gif">
 		  		</c:if>
 		  		${board.subject}
 		  	</td>
@@ -90,10 +85,10 @@
 </table>
 
 <div id="table_search">
-	<input type="button" value="글쓰기" class="btn" onclick="location.href='write.jsp';">
+	<input type="button" value="글쓰기" class="btn" onclick="location.href='writeForm.do';">
 </div>
 
-<form action="notice.jsp" method="get">
+<form action="notice.do" method="get">
 <div id="table_search">
 	<input type="text" name="search" value="${search}" class="input_box">
 	<input type="submit" value="제목검색" class="btn">
@@ -107,12 +102,12 @@
 <c:if test="${pageInfoMap.count gt 0}">
 	<%-- [이전] 출력 --%>
 	<c:if test="${pageInfoMap.startPage gt pageInfoMap.pageBlock}">
-		<a href="notice.jsp?pageNum=${pageInfoMap.startPage - pageInfoMap.pageBlock}&search=${search}">[이전]</a>
+		<a href="notice.do?pageNum=${pageInfoMap.startPage - pageInfoMap.pageBlock}&search=${search}">[이전]</a>
 	</c:if>
 
 	<%-- 페이지블록 페이지5개 출력 --%>
 	<c:forEach var="i" begin="${pageInfoMap.startPage}" end="${pageInfoMap.endPage}" step="1">
-		<a href="notice.jsp?pageNum=${i}&search=${search}">
+		<a href="notice.do?pageNum=${i}&search=${search}">
 		<c:choose>
 			<c:when test="${i eq pageNum}">
 				<span style="font-weight: bold;">[${i}]</span>
@@ -125,24 +120,10 @@
 	</c:forEach>
 
 	<%-- [다음] 출력 --%>
-	
-	
+	<c:if test="${pageInfoMap.endPage lt pageInfoMap.pageCount}">
+		<a href="notice.do?pageNum=${pageInfoMap.startPage + pageInfoMap.pageBlock}&search=${search}">[다음]</a>
+	</c:if>
 </c:if>
-
-<%
-if (count > 0) {
-	
-
-	
-	// [다음] 출력
-	if (endPage < pageCount) {
-		%>
-		<a href="notice.jsp?pageNum=<%=startPage+pageBlock %>&search=<%=search %>">[다음]</a>
-		<%
-	}
-	
-} // if
-%>
 </div>
     
 </article>

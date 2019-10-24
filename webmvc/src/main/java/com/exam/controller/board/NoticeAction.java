@@ -99,6 +99,7 @@ public class NoticeAction implements Action {
 		request.setAttribute("boardList", boardList);
 		request.setAttribute("pageInfoMap", pageInfoMap);
 		request.setAttribute("pageNum", pageNum);
+		request.setAttribute("search", search);
 		
 		
 		ActionForward forward = new ActionForward();

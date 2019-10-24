@@ -452,7 +452,7 @@ public class BoardDao {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT COUNT(*) ");
-		sb.append("FROM jspdb.board ");
+		sb.append("FROM board ");
 		sb.append("WHERE num = ? ");
 		sb.append("AND passwd = ? ");
 		

@@ -3,14 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- ${cookie.쿠키이름.value} 로 접근 --%>
-<c:set var="id" value="${cookie.id.value}" scope="session" />
+<c:if test="${not empty cookie.id.value}">
+	<c:set var="id" value="${cookie.id.value}" scope="session" />
+</c:if>
 
-<%
-String id = null;
 
-// 세션값 가져오기 "id"
-id = (String) session.getAttribute("id");
-%>
  <header>
     <div id="login">
     	<c:choose>
