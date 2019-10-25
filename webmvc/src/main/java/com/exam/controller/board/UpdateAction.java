@@ -48,7 +48,7 @@ public class UpdateAction implements Action {
 		
 		// 글목록 notice.do로 리다이렉트로 이동
 //		ActionForward forward = new ActionForward();
-//		forward.setPath("content.do?num=" + boardVO.getNum() + "pageNum='" + pageNum);
+//		forward.setPath("content.do?num=" + boardVO.getNum() + "&pageNum=" + pageNum + "';");
 //		forward.setRedirect(true);
 //		return forward;
 		
@@ -57,7 +57,7 @@ public class UpdateAction implements Action {
 		PrintWriter out = response.getWriter();
 		out.println("<script>");
 		out.println("alert('글 수정 성공!');");
-		out.println("location.href = 'content.do?num=" + boardVO.getNum() + "pageNum='" + pageNum + ";");
+		out.println("location.href = 'content.do?num=" + boardVO.getNum() + "&pageNum=" + pageNum + "';");
 		out.println("</script>");
 		out.close();
 		return null;

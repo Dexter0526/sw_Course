@@ -227,7 +227,7 @@ public class BoardDao {
 		 * MySQL용 글목록 가져오기 SQL문. 시작행번호 0부터 시작
 		 */
 		sb.append("SELECT * ");
-		sb.append("FROM jspdb.board ");
+		sb.append("FROM board ");
 		// 검색어 search가 있을때는 검색조건절 where를 추가함
 		if (!(search == null || search.equals(""))) {
 			sb.append("WHERE subject LIKE ? ");
