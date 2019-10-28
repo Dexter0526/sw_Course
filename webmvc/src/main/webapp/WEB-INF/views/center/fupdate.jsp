@@ -36,7 +36,7 @@
     
 <h1>File Notice Update</h1>
 
-<form action="fupdateProcess.jsp" method="post" name="frm" onsubmit="return check();" enctype="multipart/form-data">
+<form action="fupdate.do" method="post" name="frm" onsubmit="return check();" enctype="multipart/form-data">
 <%-- 수정할 글번호는 눈에 안보이는 hidden 타입 입력요소 사용 --%>
 <input type="hidden" name="pageNum" value="${pageNum}">
 <input type="hidden" name="num" value="${num}">
@@ -69,7 +69,7 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-			<button type="button" id="btn" onclick="alert('dd');">새로 업로드</button>
+			<button type="button" id="btn">새로 업로드</button>
 			<div id="newFilesContainer"></div>
 		</td>
 	</tr>
@@ -102,16 +102,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 function check() {
-	// 로그인 안한 사용자일 경우 패스워드 입력여부 확인
-	var objPasswd = document.frm.passwd;
-	if (objPasswd != null) {
-		if (objPasswd.value.length == 0) {
-			alert('게시글 패스워드는 필수 입력사항입니다.');
-			objPasswd.focus();
-			return false;
-		}
-	}
-	
 	// 글수정 의도 확인
 	var result = confirm('${num}번 글을 정말로 수정하시겠습니까?');
 	if (result == false) {
@@ -122,48 +112,23 @@ function check() {
 
 
 // id가 btn인 버튼에 클릭이벤트 연결
-const btn = document.getElementById('btn');
 let num = 1;
-btn.onclick = function () {
+$('#btn').on('click', function () {
 	let str = '<input type="file" name="newFile' + num + '"><br>';
-	let container = document.getElementById('newFilesContainer');
-	container.innerHTML += str; // 뒤에 추가
+	$('#newFilesContainer').append(str); // 뒤에 추가
 	num++;
-};
+});
 
-
-// class명이 del인 span태그에 클릭이벤트 연결하기
-// querySelectorAll로 리턴되는 객체는 NodeList 타입임.
-var delList = document.querySelectorAll('span.del');
-for (let i=0; i<delList.length; i++) {
-	var spanElem = delList.item(i);
-	// span요소에 이벤트 연결하기
-	spanElem.onclick = function (event) {
-		// 이벤트객체의 target은 이벤트가 발생된 객체를 의미함.
-		// closest()는 가장 가까운 상위요소 한개 가져오기
-		var liElem = event.target.closest('li');
-		// childeNodes는 현재 요소의 자식요소들을 NodeList 타입으로 가져옴.
-		var ndList = liElem.childNodes;
-		
-		var divElem = ndList.item(1);
-		var inputElem = ndList.item(3);
-		
-		inputElem.setAttribute('name', 'delFiles'); // name 속성값 바꾸기
-		divElem.remove(); // 삭제
-	};
-	
-} // for
 
 
 // class명이 del인 span태그에 클릭이벤트 연결하기 - jQuery방식
-/*
 $('span.del').on('click', function () {
 	var $li = $(this).closest('li');
 	
 	$li.children('input[type="hidden"]').attr('name', 'delFiles');
 	$li.children('div.attach-item').remove();
 });
-*/
+
 </script>
 </body>
 </html>   
