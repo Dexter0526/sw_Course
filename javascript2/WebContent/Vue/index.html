@@ -45,12 +45,13 @@
 					//alert(event.target);
 					alert(this.message);
 				}
-			},
-			created: function () {
-				axios.get('getBoardListJson.do').then(function (response) {
-					this.monList = response.data;
-				});
 			}
+// 			,
+// 			created: function () {
+// 				axios.get('getBoardListJson.do').then(function (response) {
+// 					this.monList = response.data;
+// 				});
+// 			}
 		});
 	</script>
 </body>
