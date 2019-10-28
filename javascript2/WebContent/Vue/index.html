@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vue.js App</title>
+</head>
+<body>
+
+	<div id="app">
+		<!-- 여기 #app 내부에 템플릿 출력하는 곳 -->
+		<p>{{ message }}</p>
+		<input type="text" v-model="message">
+		
+		<ol>
+			<li v-for="item in list">{{ item }}</li>
+		</ol>
+		
+		<ul>
+			<li v-for="monster in monList">
+				아이디: {{ monster.id }}  {{ monster.name }}  HP: {{ monster.hp }}
+			</li>
+		</ul>
+		
+		<button v-on:click="handleClick">버튼</button>
+		
+		<p v-if="show">안녕 Vue.js!</p>
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				message: 'Hello Vue.js!',
+				list: ['사과', '바나나', '딸기'],
+				show: true,
+				monList: [
+						 { id: 1, name: '슬라임', hp: 100 },
+					     { id: 2, name: '고블린', hp: 200 },
+					     { id: 3, name: '드래곤', hp: 500 }
+				]
+			},
+			methods: {
+				handleClick: function (event) {
+					//alert(event.target);
+					alert(this.message);
+				}
+			},
+			created: function () {
+				axios.get('getBoardListJson.do').then(function (response) {
+					this.monList = response.data;
+				});
+			}
+		});
+	</script>
+</body>
+</html>
+
+
+
