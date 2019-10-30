@@ -1,15 +1,8 @@
 package com.exam.dao;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.exam.dao.mapper.MemberMapper;
 import com.exam.vo.MemberVO;
@@ -45,7 +38,7 @@ public class MemberDao {
 		return isIdDuplicated;
 	} // isIdDuplicated method
 
-	public void insertMember(MemberVO vo) {
+	public int insertMember(MemberVO vo) {
 		// Connection 가져오기
 		SqlSession sqlSession = DBManager.getSqlSessionFactory().openSession();
 		// 인터페이스를 구현한 Mapper 프록시 객체를 만들어서 리턴함
@@ -54,9 +47,16 @@ public class MemberDao {
 		int count = mapper.insertMember(vo);
 		System.out.println("count : " + count);
 		// 커밋
-		sqlSession.commit();
+		if (count > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
 		// JDBC 자원 닫기
 		sqlSession.close();
+		
+		return count;
 	} // insertMember method
 
 	public MemberVO getMember(String id) {
