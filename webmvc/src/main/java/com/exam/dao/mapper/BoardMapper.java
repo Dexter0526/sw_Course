@@ -12,7 +12,7 @@ public interface BoardMapper {
 	public int nextBoardNum();
 	
 	// 게시글 한개 등록하는 메소드
-	public void insertBoard(BoardVO boardVO);
+	public int insertBoard(BoardVO boardVO);
 	
 	// 페이징으로 글목록 가져오기
 	// 매개변수가 2개 이상일때는 @Param("설정값이름") 이름 설정하기
@@ -28,10 +28,17 @@ public interface BoardMapper {
 	public BoardVO getBoard(int num);
 	
 	
-	public int countByNumAndPasswd(int num, String passwd);
+	public int countByNumAndPasswd(@Param("num") int num, @Param("passwd") String passwd);
 	
 	
+	// 게시글 수정하기 메소드
+	public void updateBoard(BoardVO boardVO);
 	
+	// 글번호에 해당하는 글 한개 삭제하기 메소드
+	public void deleteBoard(int num);
+	
+	
+	public int updateReplyGroupSequence(@Param("reRef") int reRef, @Param("reSeq") int reSeq);
 	
 	
 	

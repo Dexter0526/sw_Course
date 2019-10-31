@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.exam.controller.Action;
 import com.exam.controller.ActionForward;
 import com.exam.dao.MemberDao;

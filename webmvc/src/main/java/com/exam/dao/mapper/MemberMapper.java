@@ -10,7 +10,9 @@ import com.exam.vo.MemberVO;
 
 public interface MemberMapper {
 
-	@Select("SELECT COUNT(*) AS cnt FROM jspdb.member WHERE id = #{id}")
+	@Select("SELECT COUNT(*) AS cnt "
+			+ "FROM jspdb.member "
+			+ "WHERE id = #{id}")
 	public int countMemberById(String id);
 	
 	

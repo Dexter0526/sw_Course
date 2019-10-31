@@ -41,7 +41,7 @@ public class ReWriteAction implements Action {
 		boardVO.setReadcount(0); // 조회수 0
 		
 		// 답글쓰기 메소드 호출
-		boardDao.reInsertBoard(boardVO);
+		boolean isInserted = boardDao.reInsertBoard(boardVO);
 		
 		// 글목록으로 이동
 		ActionForward forward = new ActionForward();
