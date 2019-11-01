@@ -45,7 +45,7 @@ public class Ex9 {
 				System.out.println();
 			} // while
 			
-			
+			 
 			
 		} catch (Exception e) {
 			e.printStackTrace();
