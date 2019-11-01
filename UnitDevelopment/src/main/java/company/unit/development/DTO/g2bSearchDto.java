@@ -2,12 +2,11 @@ package company.unit.development.DTO;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
 
 @Data
-@XmlRootElement(name="item")
+//@XmlRootElement(name="item")
 public class g2bSearchDto {
 //	private int resultCode;
 //	private String  resultMsg;
@@ -24,10 +23,10 @@ public class g2bSearchDto {
 	private String opengCorpInfo;
 	private String progrsDivCdNm;
 	private Date inptDt;
-	private boolean rsrvtnPrceFileExistnceYn;
+	private String rsrvtnPrceFileExistnceYn;
 	private int ntceInsttCd;
 	private String ntceInsttNm;
-	private String dminsttCd;
+	private int dminsttCd;
 	private String dminsttNm;
 	
 }
