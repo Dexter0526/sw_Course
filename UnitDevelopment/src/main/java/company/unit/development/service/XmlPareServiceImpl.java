@@ -17,7 +17,9 @@ import org.json.simple.parser.JSONParser;
 
 import company.unit.development.DTO.g2bSearchDto;
 import company.unit.development.DTO.g2bSearchRequestDto;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Service
 @Transactional
 public class XmlPareServiceImpl implements ParseService{
@@ -48,19 +50,28 @@ public class XmlPareServiceImpl implements ParseService{
 	@Override
 	public List<g2bSearchDto> parseNara(g2bSearchRequestDto dto){
 		List<g2bSearchDto> nara = new ArrayList<g2bSearchDto>();
-		
 		BufferedReader reader = null;
+		
+		dto.setNumOfRows(dto.getNumOfRows() != null ? "&numOfRows="+dto.getNumOfRows() : "");
+		dto.setPageNo(dto.getPageNo() != null ? "&pageNo="+dto.getPageNo() : "");
+		dto.setInqryDiv(dto.getInqryDiv() != null ? "&inqryDiv=" + dto.getInqryDiv() : "");
+		dto.setInqryBgnDt(dto.getInqryBgnDt() != null ? "&inqryBgnDt="+dto.getInqryBgnDt() : "");
+		dto.setInqryEndDt(dto.getInqryEndDt() != null ? "&inqryEndDt="+dto.getInqryEndDt() : "");
+		dto.setBidNtceNo(dto.getBidNtceNo() != null ? "&bidNtceNo="+dto.getBidNtceNo() : "");
+		
 		try {
 			URL url = new URL(URL 
-					+ "?serviceKey=" + dto.getServiceKey() 
-					+ "&pageNo=" + dto.getPageNo()
-					+ "&numOfRows=" + dto.getNumOfRows()
-					+ "&inqryDiv=" +dto.getInqryDiv()
-					+ "&inqryBgnDt=" + dto.getInqryBgnDt()
-					+ "&inqryEndDt=" + dto.getInqryEndDt()
-					//+ "&bidNtceNo=" + dto.getBidNtceNo()
+					+ dto.getServiceKey() 
+					+ dto.getPageNo()
+					+ dto.getNumOfRows()
+					+ dto.getInqryDiv()
+					+ dto.getInqryBgnDt()
+					+ dto.getInqryEndDt()
+					+ dto.getBidNtceNo()
 					+ "&type=json");
-			
+			log.info("url : " + url);
+			// test
+//			URL url = new URL("http://apis.data.go.kr/1230000/ScsbidInfoService/getOpengResultListInfoCnstwk?serviceKey=9s4gRft8gnWr6fo6gnxD6UXBzHj5gLGjGfllSuazFkendirH%2FyPbiZ7uirB2ZzwaWcC87qQChsI5w2t20BSnwA%3D%3D&numOfRows=10&pageNo=1&inqryDiv=1&inqryBgnDt=201605010000&inqryEndDt=201705052359&bidNtceNo=20160329825&type=json");		
 			reader = new BufferedReader(new InputStreamReader(url.openStream(), "utf-8"));
 			
 			
@@ -79,21 +90,20 @@ public class XmlPareServiceImpl implements ParseService{
 				JSONObject rowObject = (JSONObject) iter.next();
 				
 				g2bSearchDto g2bDto = new g2bSearchDto();
-				
-				g2bDto.setBidNtceNo((int) rowObject.get("bidNtceNo"));
-				g2bDto.setBidNtceOrd((int) rowObject.get("bidNtceOrd"));
-				g2bDto.setBidClsfcNo((int) rowObject.get("bidClsfcNo"));
-				g2bDto.setRbidNo((int) rowObject.get("rbidNo"));
+				g2bDto.setBidNtceNo((String) rowObject.get("bidNtceNo"));
+				g2bDto.setBidNtceOrd((String) rowObject.get("bidNtceOrd"));
+				g2bDto.setBidClsfcNo((String) rowObject.get("bidClsfcNo"));
+				g2bDto.setRbidNo((String) rowObject.get("rbidNo"));
 				g2bDto.setBidNtceNm((String) rowObject.get("bidNtceNm"));
-				g2bDto.setOpengDt((Date) rowObject.get("opengDt"));
-				g2bDto.setPrtcptCnum((int) rowObject.get("prtcptCnum"));
+				g2bDto.setOpengDt((String) rowObject.get("opengDt"));
+				g2bDto.setPrtcptCnum((String) rowObject.get("prtcptCnum"));
 				g2bDto.setOpengCorpInfo((String) rowObject.get("opengCorpInfo"));
 				g2bDto.setProgrsDivCdNm((String) rowObject.get("progrsDivCdNm"));
-				g2bDto.setInptDt((Date) rowObject.get("inptDt"));
+				g2bDto.setInptDt((String) rowObject.get("inptDt"));
 				g2bDto.setRsrvtnPrceFileExistnceYn((String) rowObject.get("rsrvtnPrceFileExistnceYn"));
-				g2bDto.setNtceInsttCd((int) rowObject.get("ntceInsttCd"));
+				g2bDto.setNtceInsttCd((String) rowObject.get("ntceInsttCd"));
 				g2bDto.setNtceInsttNm((String) rowObject.get("ntceInsttNm"));
-				g2bDto.setDminsttCd((int) rowObject.get("dminsttCd"));
+				g2bDto.setDminsttCd((String) rowObject.get("dminsttCd"));
 				g2bDto.setDminsttNm((String) rowObject.get("dminsttNm"));
 				
 				nara.add(g2bDto);

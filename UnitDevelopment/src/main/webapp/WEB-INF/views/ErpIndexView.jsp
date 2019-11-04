@@ -38,37 +38,38 @@
 			
 			<!-- body -->
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">Dashboard</h1>
+				<h1 class="page-header">개찰결과 조회 </h1>
 
 				<!-- body head -->
-				<div class="row placeholders">
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img data-src="holder.js/200x200/auto/sky" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img data-src="holder.js/200x200/auto/vine" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img data-src="holder.js/200x200/auto/sky" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img data-src="holder.js/200x200/auto/vine" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-				</div>
+<!-- 				<div class="row placeholders" align="left"> -->
+					<form class="form-inline">
+					  <div class="form-group">
+					    <label for="exampleInputName2">조회구분</label>
+					    <select class="form-control" name="inqryDiv">
+						  <option value="1">1.입력일시</option>
+						  <option value="2">2.공고일시</option>
+						  <option value="3">3.개찰일시</option>
+						  <option value="4">4.입찰공고번호</option>
+						</select>
+					  </div><br><br>
+					  <div class="form-group">
+					    <label for="exampleInputName2">조회시작일시</label>
+					    <input type="text" class="form-control" id="" name ="inqryBgnDt" placeholder="201911031159">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">조회종료일시</label>
+					    <input type="text" class="form-control" id="" name ="inqryEndDt" placeholder="201911041159">
+					  </div><br><br>
+					  <div class="form-group">
+					    <label for="exampleInputEmail2">입찰공고번호</label>
+					    <input type="text" class="form-control" id="" name = "bidNtceNo" placeholder="bidNtceNo">
+					  </div>
+					  <br><br>
+					  <button type="submit" class="btn btn-default">Send invitation</button>
+					</form>
+<!-- 				</div> -->
 
-				<h2 class="sub-header">Section title</h2>
+				<h2 class="sub-header">개찰 결과 리스트</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>

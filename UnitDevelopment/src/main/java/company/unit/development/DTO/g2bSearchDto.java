@@ -13,20 +13,20 @@ public class g2bSearchDto {
 //	private int numOfRows;
 //	private int pageNo;
 //	private int totalCount;
-	private int bidNtceNo;
-	private int bidNtceOrd;
-	private int bidClsfcNo;
-	private int rbidNo;
+	private String bidNtceNo;
+	private String bidNtceOrd;
+	private String bidClsfcNo;
+	private String rbidNo;
 	private String bidNtceNm;
-	private Date opengDt;
-	private int prtcptCnum;
+	private String opengDt;
+	private String prtcptCnum;
 	private String opengCorpInfo;
 	private String progrsDivCdNm;
-	private Date inptDt;
+	private String inptDt;
 	private String rsrvtnPrceFileExistnceYn;
-	private int ntceInsttCd;
+	private String ntceInsttCd;
 	private String ntceInsttNm;
-	private int dminsttCd;
+	private String dminsttCd;
 	private String dminsttNm;
 	
 }

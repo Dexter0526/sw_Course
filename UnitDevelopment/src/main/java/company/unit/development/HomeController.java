@@ -51,8 +51,6 @@ public class HomeController {
 	public String index(g2bSearchRequestDto dto, Model model, HttpServletRequest request) {
 		log.info("home");
 
-		dto.setInqryBgnDt(201605010000L);
-		dto.setInqryEndDt(201705010000L);
 		model.addAttribute("nara", service.parseNara(dto));
 		
 		return "ErpIndexView";
