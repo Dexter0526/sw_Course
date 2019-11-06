@@ -9,19 +9,23 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
-		<!-- 
-		root-context.xml은 웹 관련없는 공통모듈 스프링빈 등록 
-		ex) DAO, Service 클래스가 대표적
-		-->
+		<!--
+			root-context.xml은 웹과 관련없는 공통모듈 스프링빈 등록
+			예: DAO, Service 클래스가 대표적
+		 -->
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
-	<!-- spring-context를 실행시키는 역할 -->
+		<!-- spring-context 를 실행시키는 역할 -->
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- 위에 listener 준비 완료 후 -->
+
+
+
+
+	<!-- 위에 listener 준비 완료 후  -->
 
 	<!-- Processes application requests -->
 	<servlet>
@@ -30,10 +34,10 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
-			<!-- 
+		<!--
 			servlet-context.xml은 웹과 관련있는 스프링빈 등록
-			예 : Controller(Action) 클래스가 대표적
-			 -->
+			예: Controller(Action) 클래스가 대표적
+		 -->
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
