@@ -5,10 +5,10 @@
 <head>
 <meta charset="utf-8">
 <title>Welcome to Fun Web</title>
-<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
-<link href="css/subpage.css" rel="stylesheet" type="text/css"  media="all">
-<link href="css/print.css" rel="stylesheet" type="text/css"  media="print">
-<link href="css/iphone.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/resources/css/default.css" rel="stylesheet" type="text/css" media="all">
+<link href="/resources/css/subpage.css" rel="stylesheet" type="text/css"  media="all">
+<link href="/resources/css/print.css" rel="stylesheet" type="text/css"  media="print">
+<link href="/resources/css/iphone.css" rel="stylesheet" type="text/css" media="screen">
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js" type="text/javascript"></script>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/ie7-squish.js" type="text/javascript"></script>
@@ -17,7 +17,7 @@
 
 
 <!--[if IE 6]>
- <script src="../script/DD_belatedPNG.js"></script>
+ <script src="/resources/script/DD_belatedPNG.js"></script>
  <script>
    /* EXAMPLE */
    DD_belatedPNG.fix('#wrap');
@@ -44,7 +44,7 @@
 <article>
     
 <h1>Join Us</h1>
-<form name="frm" id="join" action="memberJoin.do" method="post" onsubmit="return check();">    
+<form name="frm" id="join" action="/member/join" method="post" onsubmit="return check();">    
 <fieldset>
 	<legend>Basic Info</legend>
 	
@@ -91,7 +91,7 @@ $('#id').keyup(function () {
 	console.log(id);
 	
 	$.ajax({
-		url: 'joinIdDupCheckJson.do',
+		url: '/member/joinIdDupCheckJson',
 		data: {id: id},
 		success: function (data) {
 			console.log(typeof data);
@@ -162,7 +162,7 @@ function winOpen() {
 	// open()에 의해 새로열린 창은 자식창
 	// 부모-자식 관계가 있음.
 	// 자식창의 데이터를 부모창으로 가져올수 있음.
-	var childWindow = window.open('joinIdDupCheck.do?userid=' + inputId, '', 'width=400,height=300');
+	var childWindow = window.open('/member/joinIdDupCheck?userid=' + inputId, '', 'width=400,height=300');
 	//childWindow.document.write('입력한 아이디: ' + inputId + '<br>');
 }
 </script>
