@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.exam.domain.MemberVO;
 import com.exam.service.MemberService;
@@ -42,7 +44,7 @@ public class MemberController {
 		// 요청 파라미터 채워서 넣어줌.
 
 		// 가입날짜 생성해서 자바빈에 저장
-		memberVO.setRegDate(new Timestamp(System.currentTimeMillis()));
+		//memberVO.setRegDate(new Timestamp(System.currentTimeMillis()));
 
 		System.out.println(memberVO);
 
@@ -153,9 +155,11 @@ public class MemberController {
 	
 	
 	@GetMapping("/joinIdDupCheckJson")
-	public void joinIdDupCheckJson(@RequestParam("id") String userid) {
+	 // @ResponseBody 애노테이션을 통해 리턴값을 JSON형식으로 응답준다.
+	public @ResponseBody boolean joinIdDupCheckJson(@RequestParam("id") String userid) {
 		// 아이디 중복확인 메소드 호출
 		boolean isIdDup = memberService.isIdDuplicated(userid);
+		return isIdDup;
 	}
 	
 	
