@@ -1,5 +1,6 @@
 package com.exam.controller;
 
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,17 +62,16 @@ public class BoardController {
 
 		return "redirect:/board/list";
 	}
-	
+
 	@GetMapping("/list")
-	public String list(
-			@ModelAttribute
-			@RequestParam(defaultValue = "1") int pageNum,
-			
-			@ModelAttribute
+	public String list(@RequestParam(defaultValue = "1") int pageNum,
+
 			@RequestParam(defaultValue = "", required = false) String search,
-			
+
 			Model model) {
-		
+
+		log.info("pageNum : " + pageNum);
+
 		// ==========================================
 		// 한 페이지에 해당하는 글목록 구하기 작업
 		// ==========================================
@@ -78,50 +81,47 @@ public class BoardController {
 
 		// 시작행번호 구하기
 //		int startRow = (pageNum - 1) * pageSize + 1; // Oracle 기준
-		int startRow = (pageNum - 1) * pageSize;     // MySQL 기준
-		
+		int startRow = (pageNum - 1) * pageSize; // MySQL 기준
 
 		// 글목록 가져오기 메소드 호출
 		List<BoardVO> boardList = boardService.getBoards(startRow, pageSize, search);
-		
-		
-		
+
 		// ==========================================
 		// 페이지 블록 관련정보 구하기 작업
 		// ==========================================
-		
+
 		// board테이블 전체글개수 가져오기 메소드 호출
 		int count = boardService.getBoardCount(search);
-		
+
 		// 총 페이지 개수 구하기
-		//  전체 글개수 / 한페이지당 글개수 (+ 1 : 나머지 있을때)
+		// 전체 글개수 / 한페이지당 글개수 (+ 1 : 나머지 있을때)
 		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		
+
 		// 페이지블록 수 설정
 		int pageBlock = 5;
-		
+
 		// 시작페이지번호 startPage 구하기
 		// pageNum값이 1~5 사이면 -> 시작페이지는 항상 1이 나와야 함
-		
+
 		// ((1 - 1) / 5) * 5 + 1 -> 1
 		// ((2 - 1) / 5) * 5 + 1 -> 1
 		// ((3 - 1) / 5) * 5 + 1 -> 1
 		// ((4 - 1) / 5) * 5 + 1 -> 1
 		// ((5 - 1) / 5) * 5 + 1 -> 1
-		
+
 		// ((6 - 1) / 5) * 5 + 1 -> 6
 		// ((7 - 1) / 5) * 5 + 1 -> 6
 		// ((8 - 1) / 5) * 5 + 1 -> 6
 		// ((9 - 1) / 5) * 5 + 1 -> 6
 		// ((10- 1) / 5) * 5 + 1 -> 6
 		int startPage = ((pageNum - 1) / pageBlock) * pageBlock + 1;
-		
+
 		// 끝페이지번호 endPage 구하기
 		int endPage = startPage + pageBlock - 1;
 		if (endPage > pageCount) {
 			endPage = pageCount;
 		}
-		
+
 		// 페이지블록 관련정보를 Map 또는 VO 객체로 준비
 		Map<String, Integer> pageInfoMap = new HashMap<String, Integer>();
 		pageInfoMap.put("count", count);
@@ -129,16 +129,109 @@ public class BoardController {
 		pageInfoMap.put("pageBlock", pageBlock);
 		pageInfoMap.put("startPage", startPage);
 		pageInfoMap.put("endPage", endPage);
-		
-		
+
 		// 뷰(jsp)에 사용할 데이터를 request 영역객체에 저장
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pageInfoMap", pageInfoMap);
-		
+		model.addAttribute("search", search);
+		model.addAttribute("pageNum", pageNum);
+
 		return "center/notice";
+	} // list
+
+	@GetMapping("/content")
+	public String content(int num, @ModelAttribute("pageNum") int pageNum, Model model) {
+		// @ModelAttribute("pageNum") p.142 마지막 괄호안 내용 참조.
+		// 기본자료형 파라미터값을 그대로 Model에 담아서 뷰jsp까지 넘길때는
+		// 애노테이션에 값을 반드시 지정해야함.
+
+		// 조회수 1증가시키는 메소드 호출
+		boardService.updateReadcount(num);
+
+		// 글번호에 해당하는 레코드 한개 가져오기
+		BoardVO boardVO = boardService.getBoard(num);
+
+		// request 영역객체에 저장
+		model.addAttribute("board", boardVO);
+
+		return "center/content";
 	}
-	
-	
-	
+
+	@GetMapping("/modify")
+	public String modify(int num, @ModelAttribute("pageNum") String pageNum, Model model) {
+		// 수정할 글 가져오기
+		BoardVO boardVO = boardService.getBoard(num);
+
+		// request 영역객체에 저장
+		model.addAttribute("board", boardVO);
+
+		return "center/update";
+	}
+
+	@PostMapping("/modify")
+	public ResponseEntity<String> modify(BoardVO boardVO, String pageNum) {
+
+		boolean isPasswdEqual = boardService.isPasswdEqual(boardVO.getNum(), boardVO.getPasswd());
+		if (!isPasswdEqual) { // !boardVO.getPasswd().equals(dbBoardVO.getPasswd())
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("alert('글 패스워드가 다릅니다.');");
+			sb.append("history.back();");
+			sb.append("</script>");
+
+			ResponseEntity<String> responseEntity = new ResponseEntity<String>(sb.toString(), headers, HttpStatus.OK);
+			return responseEntity;
+		}
+
+		// 게시글 수정하기 메소드 호출
+		boardService.updateBoard(boardVO);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "text/html; charset=UTF-8");
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("<script>");
+		sb.append("alert('글 수정 성공!');");
+		sb.append("location.href = '/board/content?num=" + boardVO.getNum() + "&pageNum=" + pageNum + "';");
+		sb.append("</script>");
+
+		ResponseEntity<String> responseEntity = new ResponseEntity<String>(sb.toString(), headers, HttpStatus.OK);
+
+		return responseEntity;
+	} // modify post
+
+	@GetMapping("/delete")
+	public String delete(@ModelAttribute("num") int num, @ModelAttribute("pageNum") String pageNum) {
+		return "center/delete";
+	} // delete get
+
+	@PostMapping("/delete")
+	public ResponseEntity<String> delete(int num, String passwd, String pageNum) {
+
+		// 글패스워드가 다를때는 "글패스워드 다름" 뒤로가기
+		if (!boardService.isPasswdEqual(num, passwd)) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("alert('글 패스워드가 다릅니다.');");
+			sb.append("history.back();");
+			sb.append("</script>");
+
+			return new ResponseEntity<String>(sb.toString(), headers, HttpStatus.OK);
+		}
+
+		// 게시글 삭제하기 메소드 호출
+		boardService.deleteBoard(num); // 글 삭제처리
+
+		// 삭제처리 후 글목록 /board/list 로 이동
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Location", "/board/list?pageNum=" + pageNum);
+		return new ResponseEntity<String>(headers, HttpStatus.FOUND); // HttpStatus.FOUND 리다이렉트
+	} // delete post
 
 }

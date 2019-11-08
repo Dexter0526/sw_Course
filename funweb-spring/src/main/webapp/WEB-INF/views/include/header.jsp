@@ -24,7 +24,7 @@
     </div>
     
     <div class="clear"></div>
-    <div id="logo"><a href="main.do"><img src="/resources/images/logo.gif" width="265" height="62" alt="Fun Web"></a></div>
+    <div id="logo"><a href="/"><img src="/resources/images/logo.gif" width="265" height="62" alt="Fun Web"></a></div>
     <nav id="top_menu">
         <ul>
             <li><a href="/">HOME</a></li>

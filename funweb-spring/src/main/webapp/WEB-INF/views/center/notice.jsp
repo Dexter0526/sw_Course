@@ -59,7 +59,7 @@
     <c:when test="${pageInfoMap.count gt 0}"><%-- ${not empty boardList} --%>
       
       <c:forEach var="board" items="${boardList}">
-		  <tr onclick="location.href='content.do?num=${board.num}&pageNum=${pageNum}';">
+		  <tr onclick="location.href='/board/content?num=${board.num}&pageNum=${pageNum}';">
 		  	<td>${board.num}</td>
 		  	<td class="left">
 		  		<c:if test="${board.reLev gt 0}"><%-- 답글일때 --%>
