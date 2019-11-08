@@ -94,9 +94,7 @@ public class BoardService {
 	
 	// 답글쓰기 메소드 (update 이후 insert)
 	// 트랜잭션 처리가 요구됨(안전하게 처리하려는 목적)
-	public boolean reInsertBoard(BoardVO boardVO) {
-		boolean isInserted = false; // 답글쓰기 성공여부
-		
+	public void reInsertBoard(BoardVO boardVO) {
 		// 같은 글그룹에서의 답글순서(re_seq) 재배치 update수행
 		// 조건 re_ref같은그룹 re_seq 큰값은 re_seq+1
 		boardMapper.updateReplyGroupSequence(boardVO.getReRef(), boardVO.getReSeq());
@@ -109,7 +107,5 @@ public class BoardService {
 		log.info("답글: " + boardVO);
 		// 답글 insert 수행
 		boardMapper.insertBoard(boardVO);
-		
-		return isInserted;
 	} // reInsertBoard method
 }
