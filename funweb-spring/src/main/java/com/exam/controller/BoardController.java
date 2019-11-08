@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.exam.domain.BoardVO;
 import com.exam.service.BoardService;
@@ -233,5 +234,29 @@ public class BoardController {
 		headers.add("Location", "/board/list?pageNum=" + pageNum);
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND); // HttpStatus.FOUND 리다이렉트
 	} // delete post
+
+	@GetMapping("/reply")
+	public String reply(BoardVO boardVO, @ModelAttribute("pageNum") String pageNum) {
+		return "center/reWrite";
+	}
+
+	@PostMapping("/reply")
+	public String reply(BoardVO boardVO, HttpServletRequest request, String pageNum, RedirectAttributes rttr) {
+		// IP주소 값 VO에 저장
+		boardVO.setIp(request.getRemoteAddr());
+
+		// 게시글 번호 생성하는 메소드 호출
+		int num = boardService.nextBoardNum();
+		// 생성된 번호를 자바빈 글번호 필드에 설정
+		boardVO.setNum(num);
+		boardVO.setReadcount(0); // 조회수 0
+
+		// 답글쓰기 메소드 호출
+		boardService.reInsertBoard(boardVO);
+
+		//return "redirect:/board/list?pageNum=" + pageNum;
+		rttr.addAttribute("pageNum", pageNum);
+		return "redirect:/board/list";
+	}
 
 }

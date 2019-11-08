@@ -60,7 +60,7 @@
 <div id="table_search">
 	<input type="button" value="글수정" class="btn" onclick="location.href='/board/modify?num=${board.num}&pageNum=${pageNum}';">
 	<input type="button" value="글삭제" class="btn" onclick="location.href='/board/delete?num=${board.num}&pageNum=${pageNum}';">
-	<input type="button" value="답글쓰기" class="btn" onclick="location.href='/board/reply?reRef=${board.reRef}&reLev=${board.reLev}&reSeq=${board.reSeq}';">
+	<input type="button" value="답글쓰기" class="btn" onclick="location.href='/board/reply?reRef=${board.reRef}&reLev=${board.reLev}&reSeq=${board.reSeq}&pageNum=${pageNum}';">
 	<input type="button" value="목록보기" class="btn" onclick="location.href='/board/list?pageNum=${pageNum}';">
 </div>
 
