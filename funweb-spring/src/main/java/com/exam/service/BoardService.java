@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.exam.controller.BoardController;
+import com.exam.domain.AttachVO;
 import com.exam.domain.BoardVO;
+import com.exam.mapper.AttachMapper;
 import com.exam.mapper.BoardMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -19,6 +22,9 @@ public class BoardService {
 	@Autowired
 	private BoardMapper boardMapper;
 	
+	@Autowired
+	private AttachMapper attachMapper;
+
 	
 	// insert할 레코드의 번호 생성 메소드
 	public int nextBoardNum() {
@@ -32,6 +38,19 @@ public class BoardService {
 	public void insertBoard(BoardVO boardVO) {
 		boardMapper.insertBoard(boardVO);
 	} // insertBoard method
+	
+	
+	// 파일게시판 게시글 한개와 첨부파일정보 등록하는 메소드
+	public void insertBoardAndAttaches(BoardVO boardVO, List<AttachVO> attachList) {
+		// 파일게시판 주글 등록
+		boardMapper.insertBoard(boardVO);
+		
+		if (attachList.size() > 0) { // 첨부파일 정보 있으면
+			for (AttachVO attachVO : attachList) {
+				attachMapper.insertAttach(attachVO); // 첨부파일 등록
+			}
+		}
+	} // insertBoardAndAttaches method
 	
 	
 	

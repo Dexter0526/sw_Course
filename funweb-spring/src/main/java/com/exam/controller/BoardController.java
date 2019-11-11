@@ -1,7 +1,5 @@
 package com.exam.controller;
 
-import java.io.PrintWriter;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +139,7 @@ public class BoardController {
 	} // list
 
 	@GetMapping("/content")
-	public String content(int num, @ModelAttribute("pageNum") int pageNum, Model model) {
+	public String content(int num, @ModelAttribute("pageNum") String pageNum, Model model) {
 		// @ModelAttribute("pageNum") p.142 마지막 괄호안 내용 참조.
 		// 기본자료형 파라미터값을 그대로 Model에 담아서 뷰jsp까지 넘길때는
 		// 애노테이션에 값을 반드시 지정해야함.

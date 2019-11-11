@@ -17,4 +17,5 @@ public class BoardVO {
 	private int reRef;
 	private int reLev;
 	private int reSeq;
+//	private String filename;
 }
