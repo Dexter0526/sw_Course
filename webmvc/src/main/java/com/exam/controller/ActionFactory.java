@@ -1,35 +1,10 @@
 package com.exam.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.exam.controller.board.ContentAction;
-import com.exam.controller.board.DeleteAction;
-import com.exam.controller.board.DeleteFormAction;
-import com.exam.controller.board.FileContentAction;
-import com.exam.controller.board.FileDeleteAction;
-import com.exam.controller.board.FileNoticeAction;
-import com.exam.controller.board.FileUpdateAction;
-import com.exam.controller.board.FileUpdateFormAction;
-import com.exam.controller.board.FileWriteAction;
-import com.exam.controller.board.FileWriteFormAction;
-import com.exam.controller.board.NoticeAction;
-import com.exam.controller.board.ReWriteAction;
-import com.exam.controller.board.ReWriteFormAction;
-import com.exam.controller.board.UpdateAction;
-import com.exam.controller.board.UpdateFormAction;
-import com.exam.controller.board.WriteAction;
-import com.exam.controller.board.WriteFormAction;
-import com.exam.controller.member.HistoryAction;
-import com.exam.controller.member.JoinIdDupCheckAction;
-import com.exam.controller.member.JoinIdDupCheckJsonAction;
-import com.exam.controller.member.MainAction;
-import com.exam.controller.member.MemberJoinAction;
-import com.exam.controller.member.MemberJoinFormAction;
-import com.exam.controller.member.MemberLoginAction;
-import com.exam.controller.member.MemberLoginFormAction;
-import com.exam.controller.member.MemberLogoutAction;
-import com.exam.controller.member.WelcomeAction;
+import com.exam.controller.board.*;
+import com.exam.controller.chatting.*;
+import com.exam.controller.member.*;
 
 public class ActionFactory {
 
@@ -80,6 +55,13 @@ public class ActionFactory {
 		map.put("/fdelete.do", new FileDeleteAction());
 		map.put("/fupdateForm.do", new FileUpdateFormAction());
 		map.put("/fupdate.do", new FileUpdateAction());
+		
+		map.put("/chattingRoomsList.do", new ChattingRoomsListAction());
+		map.put("/chattingRoomsListJson.do", new ChattingRoomsListJsonAction());
+		map.put("/checkRoomNameDuplicateJson.do", new CheckRoomNameDuplicateJsonAction());
+		map.put("/checkNicknameDuplicateJson.do", new CheckNicknameDuplicateJsonAction());
+		map.put("/chatting.do", new ChattingAction());
+		map.put("/participantsJson.do", new ParticipantsJsonAction());
 	} // 생성자
 
 	

@@ -9,11 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.exam.controller.member.MemberJoinAction;
-import com.exam.controller.member.MemberJoinFormAction;
-import com.exam.controller.member.MemberLoginFormAction;
-
-@WebServlet("*.do")
+@WebServlet(value = "*.do", asyncSupported = true)
 public class FrontController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
