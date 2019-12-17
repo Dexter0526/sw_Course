@@ -16,6 +16,54 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
 <![endif]-->
 
+<style>
+	span#btn-span-comment {
+		display: inline-block;
+		width: 70px;
+		height: 23px;
+		border: 1px solid gray;
+		text-align: center;
+		font-size: 13px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	
+	span#btn-span-comment:active {
+		background-color: orange;
+		color: white;
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+	
+	div#comment-area {
+		margin-top: 20px;
+		padding: 10px;
+		background-color: lightgray;
+		border-top: 1px solid gray;
+		border-bottom: 1px solid gray;
+		display: none;
+	}
+	
+	div#comment-write {
+		border: 1px solid gray;
+		background-color: white;
+		padding: 20px;
+		margin-top: 20px;
+	}
+	
+	div#comment-list {
+		padding: 10px;
+	}
+	
+	div#comment-area[data-stretch="false"] {
+		display: none;
+	}
+	
+	div#comment-area[data-stretch="true"] {
+		display: block;
+	}
+</style>
 </head>
 <body>
 <div id="wrap">
@@ -65,6 +113,27 @@
 </div>
 
 
+<div class="clear"></div>
+
+
+<span id="btn-span-comment">댓글 ∨</span>
+
+<div id="comment-area" data-stretch="false">
+	<div id="comment-list">댓글목록영역</div>
+	<div id="comment-write">
+		<form id="frm">
+			이름: <input type="text" name="replyer"><br>
+			댓글내용: <br>
+			<textarea rows="3" cols="50" name="reply"></textarea>
+			<span id="char-counter">0/100</span>
+			<br>
+			<button type="button" id="btnReg">등록</button>
+		</form>
+	</div>
+</div>
+
+
+
 </article>
     
 	<div class="clear"></div>
@@ -73,8 +142,52 @@
 	<jsp:include page="../include/footer.jsp" />
 </div>
 
+<script>
+	var objSpanBtn = document.querySelector('span#btn-span-comment');
+	var objCommentArea = document.querySelector('div#comment-area');
+	var objTextArea = document.querySelector('textarea[name=reply]');
+	var objSpanCounter = document.querySelector('span#char-counter');
+	
+	
+	objSpanBtn.addEventListener('click', function (event) {
+		//event.target
+		console.log(objCommentArea.dataset.stretch);
+		var isStretch = objCommentArea.dataset.stretch;
+		console.log('isStretch : ' + isStretch);
+		
+		if (isStretch == 'true') { // 현재상태가 댓글영역이 펴져있을때
+			//objCommentArea.style.display = 'none';
+			objCommentArea.dataset.stretch = 'false';
+			objSpanBtn.innerHTML = '댓글 ∨';
+		} else { // 현재상태가 댓글영역이 접혀있을때
+			//objCommentArea.style.display = 'block';
+			objCommentArea.dataset.stretch = 'true';
+			objSpanBtn.innerHTML = '댓글 ∧';
+		}
+	});
+	
+	
+	objTextArea.addEventListener('keyup', function (event) {
+		var length = objTextArea.value.length;
+		if (length > 100) {
+			objSpanCounter.style.color = 'red';
+		} else {
+			objSpanCounter.style.color = 'green';
+		}
+		objSpanCounter.innerHTML = length + '/100';
+	});
+
+</script>
 
 </body>
-</html>   
+</html>
+
+
+
+
+
+
+
+
 
     
