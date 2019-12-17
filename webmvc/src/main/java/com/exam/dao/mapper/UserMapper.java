@@ -1,5 +1,6 @@
 package com.exam.dao.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -12,4 +13,11 @@ public interface UserMapper {
 	
 	@Select("select * from users where id = #{id}")
 	public User get(String id);
+	
+	@Delete("delete from users")
+	public void deleteAll();
+	
+	@Select("select count(*) from users")
+	public int getCount();
+	
 }

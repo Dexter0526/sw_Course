@@ -2,7 +2,6 @@ package com.exam.dao;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.exam.dao.mapper.AttachMapper;
 import com.exam.dao.mapper.UserMapper;
 import com.exam.vo.User;
 
@@ -31,5 +30,21 @@ public class UserDao {
 		}
 	}
 	
+	public void deleteAll() {
+		try (SqlSession sqlSession = DBManager.getSqlSessionFactory().openSession()) {
+			sqlSession.getMapper(UserMapper.class).deleteAll();
+			sqlSession.commit();
+		}
+	}
+	
+	public int getCount() {
+		try (SqlSession sqlSession = DBManager.getSqlSessionFactory().openSession()) {
+			return sqlSession.getMapper(UserMapper.class).getCount();
+		}
+	}
 	
 }
+
+
+
+
