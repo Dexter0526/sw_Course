@@ -29,7 +29,7 @@
         <ul>
             <li><a href="/">HOME</a></li>
             <li><a href="/company/welcome">COMPANY</a></li>
-            <li><a href="#">SOLUTIONS</a></li>
+            <li><a href="/chatting/list">SOLUTIONS</a></li>
             <li><a href="/board/list">CUSTOMER CENTER</a></li>
             <li><a href="#">CONTACT US</a></li>
         </ul>

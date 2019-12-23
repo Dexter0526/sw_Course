@@ -53,6 +53,10 @@ public class ReplyController {
 		
 		List<ReplyVO> replyList = replyService.getList(bno);
 		
+		for (ReplyVO replyVO : replyList) {
+			log.info(replyVO);
+		}
+		
 		return new ResponseEntity<List<ReplyVO>>(replyList, HttpStatus.OK);
 	}
 	

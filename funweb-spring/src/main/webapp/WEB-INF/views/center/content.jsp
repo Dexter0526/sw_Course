@@ -17,18 +17,17 @@
 <![endif]-->
 
 <style>
-	span#btn-span-comment {
+	div#btn-span-comment {
 		display: inline-block;
-		width: 70px;
-		height: 23px;
 		border: 1px solid gray;
 		text-align: center;
 		font-size: 13px;
 		font-weight: bold;
 		cursor: pointer;
+		padding: 5px;
 	}
 	
-	span#btn-span-comment:active {
+	div#btn-span-comment:active {
 		background-color: orange;
 		color: white;
 		position: relative;
@@ -63,6 +62,53 @@
 	div#comment-area[data-stretch="true"] {
 		display: block;
 	}
+	
+	ul#comment-list {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	ul#comment-list li.reply {
+		background-color: white;
+		border-bottom: 1px solid gray;
+		padding: 10px;
+	}
+	
+	div.replyer {
+		font-weight: bold;
+		float: left;
+	}
+	
+	div.mod-del {
+		float: right;
+		width: 80px;
+	}
+	
+	div.reply {
+		clear: both;
+	}
+	
+	div.replydate {
+		color: gray;
+	}
+	
+	span.modify, span.delete {
+		cursor: pointer;
+		border-bottom: 1px dotted gray;
+		display: inline-block;
+		float: right;
+		margin-left: 10px;
+	}
+	
+	span.register, span.cancel {
+		cursor: pointer;
+		border-bottom: 1px dotted gray;
+		display: inline-block;
+		margin-left: 10px;
+	}
+	
+
 </style>
 </head>
 <body>
@@ -116,10 +162,16 @@
 <div class="clear"></div>
 
 
-<span id="btn-span-comment">댓글 ∨</span>
+<div id="btn-span-comment">
+	댓글
+	<span id="reply-count"></span> 
+	<span id="toggle">∨</span>
+</div>
 
 <div id="comment-area" data-stretch="false">
-	<div id="comment-list">댓글목록영역</div>
+	
+	<ul id="comment-list"></ul>
+	
 	<div id="comment-write">
 		<form id="frm">
 			이름: <input type="text" name="replyer"><br>
@@ -142,14 +194,164 @@
 	<jsp:include page="../include/footer.jsp" />
 </div>
 
+
+<script src="/resources/script/jquery-3.4.1.js"></script>
+<script src="/resources/script/reply.js"></script>
+
 <script>
-	var objSpanBtn = document.querySelector('span#btn-span-comment');
+	console.log(replyService);
+	
+	var spanReplyCount = document.querySelector('span#reply-count');
+	var spanToggle = document.querySelector('span#toggle');
+	var objDivBtn = document.querySelector('div#btn-span-comment');
 	var objCommentArea = document.querySelector('div#comment-area');
 	var objTextArea = document.querySelector('textarea[name=reply]');
 	var objSpanCounter = document.querySelector('span#char-counter');
+	var bnoValue = ${board.num}; // 현재 게시글 번호
+	var objCommentList = document.querySelector('ul#comment-list');
+	var btnReg = document.querySelector('button#btnReg');
 	
 	
-	objSpanBtn.addEventListener('click', function (event) {
+	showList();
+	
+	
+	function showList() {
+		
+		replyService.getList({bno: bnoValue}, function (list) {
+			var str = '';
+			
+			list.forEach(function (item) {
+				console.log(item);
+				str += '<li class="reply" data-rno="' + item.rno + '">';
+				str += '    <div class="modify-reply-input"></div>';
+				
+				str += '    <div class="show-reply">';
+				str += '        <div class="replyer">' + item.replyer + '</div>';
+				str += '        <div class="mod-del">';
+				str += '            <span class="modify">수정</span>';
+				str += '            <span class="delete">삭제</span>';
+				str += '        </div>';
+				str += '        <div class="reply">' + item.reply + '</div>';
+				str += '        <div class="replydate">' + replyService.displayTime(item.replydate) + '</div>';
+				str += '    </div>';
+				str += '</li>';
+			});
+			
+			objCommentList.innerHTML = str;
+			spanReplyCount.innerHTML = list.length;
+		});
+		
+	} // showList
+	
+	
+	btnReg.addEventListener('click', function () {
+		
+		var taReply = document.querySelector('textarea[name=reply]');
+		var inputReplyer = document.querySelector('input[name=replyer]');
+		
+		var reply = {
+				reply: taReply.value.trim(),
+				replyer: inputReplyer.value.trim(),
+				bno: bnoValue
+		};
+		
+		replyService.add(reply, function (result) {
+			alert('댓글 등록 ' + result);
+			showList();
+		});
+		
+		document.querySelector('form#frm').reset();
+	});
+	
+	
+	// 동적 이벤트 바인딩
+	// 댓글 삭제 클릭이벤트
+	$('ul#comment-list').on('click', 'span.delete', function (event) {
+		
+		var delConfirm = confirm('정말로 삭제 하시겠습니까?');
+		
+		if (delConfirm == false) {
+			return;
+		}
+		
+		var rno = $(this).closest('li.reply').data('rno');
+		console.log('rno : ' + rno);
+		
+		replyService.remove(rno, function (result) {
+			alert('댓글 삭제 ' + result);
+			
+			showList();
+		});
+	});
+	
+	
+	// 댓글 수정 폼
+	$('ul#comment-list').on('click', 'span.modify', function (event) {
+		
+		$('div.modify-reply-input').css('display', 'none');
+		$('div.show-reply').css('display', 'block');
+		
+		
+		var $liReply = $(this).closest('li.reply');
+		
+		var $divShow = $liReply.find('div.show-reply');
+		$divShow.css('display', 'none');
+		
+		var replyNo = $liReply.data('rno');
+		var replyName = $liReply.find('div.replyer').text();
+		var replyContent = $liReply.find('div.reply').text();
+		
+		console.log('replyName: ' + replyName + ', replyContent: ' + replyContent);
+		
+		
+		var $divReplyInput = $(this).closest('li.reply').find('div.modify-reply-input');
+		
+		var str = '';
+		str += '<input type="text" name="reply-name" value="' + replyName + '" readonly><br>';
+		str += '<textarea rows="3" cols="50" name="reply-content">' + replyContent + '</textarea><br>';
+		str += '<span class="register">등록</span>';
+		str += '<span class="cancel">취소</span>';
+		
+		$divReplyInput.html(str);
+		$divReplyInput.css('display', 'block');
+	});
+	
+	
+	// 댓글 수정 등록
+	$('ul#comment-list').on('click', 'span.register', function (event) {
+		
+		var $liReply = $(this).closest('li.reply');
+		
+		var replyNo = $liReply.data('rno');
+		var replyContent = $liReply.find('textarea[name=reply-content]').val();
+		
+		var reply = { rno: replyNo, reply: replyContent };
+		
+		replyService.update(reply, function (result) {
+			alert('댓글 수정 ' + result);
+			
+			showList();
+		});
+		
+	});
+	
+	
+	// 댓글 수정 취소
+	$('ul#comment-list').on('click', 'span.cancel', function (event) {
+		
+		var $liReply = $(this).closest('li.reply');
+		
+		$liReply.find('div.modify-reply-input').css('display', 'none');
+		$liReply.find('div.show-reply').css('display', 'block');
+	});
+	
+</script>
+
+<script>
+
+	
+	
+	objDivBtn.addEventListener('click', function (event) {
 		//event.target
 		console.log(objCommentArea.dataset.stretch);
 		var isStretch = objCommentArea.dataset.stretch;
@@ -158,11 +360,11 @@
 		if (isStretch == 'true') { // 현재상태가 댓글영역이 펴져있을때
 			//objCommentArea.style.display = 'none';
 			objCommentArea.dataset.stretch = 'false';
-			objSpanBtn.innerHTML = '댓글 ∨';
+			spanToggle.innerHTML = '∨';
 		} else { // 현재상태가 댓글영역이 접혀있을때
 			//objCommentArea.style.display = 'block';
 			objCommentArea.dataset.stretch = 'true';
-			objSpanBtn.innerHTML = '댓글 ∧';
+			spanToggle.innerHTML = '∧';
 		}
 	});
 	
