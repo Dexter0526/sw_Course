@@ -38,6 +38,7 @@
 			<!-- servlet-context.xml은 웹과 관련있는 스프링빈 등록 예: Controller(Action) 클래스가 대표적 -->
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported><!-- 웹소켓을 위한 설정(비동기 지원) -->
 	</servlet>
 
 	<servlet-mapping>

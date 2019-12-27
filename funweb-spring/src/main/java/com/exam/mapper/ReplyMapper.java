@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.exam.domain.Criteria;
 import com.exam.domain.ReplyVO;
 
 public interface ReplyMapper {
@@ -31,7 +32,18 @@ public interface ReplyMapper {
 	public int update(ReplyVO replyVO);
 	
 	
-	@Select("SELECT * FROM reply WHERE bno = #{bno} ORDER BY rno ASC")
-	public List<ReplyVO> getList(@Param("bno") int bno);
+	@Select("SELECT * "
+			+ "FROM reply "
+			+ "WHERE bno = #{bno} "
+			+ "ORDER BY rno DESC "
+			+ "LIMIT #{cri.amount} OFFSET #{cri.startRow} ")
+	public List<ReplyVO> getListWithPaging(@Param("cri") Criteria cri, @Param("bno") int bno);
+	
+	
+	
+	@Select("SELECT COUNT(rno) FROM reply WHERE bno = #{bno}")
+	public int getCountByBno(int bno);
+	
+	
 	
 }

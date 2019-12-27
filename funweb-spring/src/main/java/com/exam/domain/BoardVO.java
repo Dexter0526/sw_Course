@@ -18,4 +18,6 @@ public class BoardVO {
 	private int reLev;
 	private int reSeq;
 //	private String filename;
+	
+	private int replycnt;
 }

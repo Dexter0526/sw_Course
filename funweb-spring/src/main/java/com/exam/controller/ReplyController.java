@@ -1,7 +1,5 @@
 package com.exam.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exam.domain.Criteria;
+import com.exam.domain.ReplyPageDTO;
 import com.exam.domain.ReplyVO;
 import com.exam.service.ReplyService;
 
@@ -48,16 +48,14 @@ public class ReplyController {
 	}
 	
 	
-	@GetMapping(value = "/pages/{bno}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable("bno") int bno) {
+	@GetMapping(value = "/pages/{bno}/{page}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("bno") int bno) {
 		
-		List<ReplyVO> replyList = replyService.getList(bno);
+		Criteria cri = new Criteria(page, 10);
 		
-		for (ReplyVO replyVO : replyList) {
-			log.info(replyVO);
-		}
+		ReplyPageDTO replyPageDTO = replyService.getListPage(cri, bno);
 		
-		return new ResponseEntity<List<ReplyVO>>(replyList, HttpStatus.OK);
+		return new ResponseEntity<ReplyPageDTO>(replyPageDTO, HttpStatus.OK);
 	}
 	
 	

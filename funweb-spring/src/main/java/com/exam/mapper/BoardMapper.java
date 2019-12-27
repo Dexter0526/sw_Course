@@ -41,7 +41,7 @@ public interface BoardMapper {
 	public int updateReplyGroupSequence(@Param("reRef") int reRef, @Param("reSeq") int reSeq);
 	
 	
-	
+	public void updateReplyCnt(@Param("bno") int bno, @Param("amount") int amount);
 	
 	
 }
